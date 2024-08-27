@@ -1,0 +1,71 @@
+name: Setup backend & frontend CI
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+env:
+  CARGO_TERM_COLOR: always
+
+jobs:
+  backend_env_setup:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Cache cargo registry
+      uses: actions/cache@v3
+      with:
+        path: |
+          ~/.cargo/registry
+          ~/.cargo/git
+        key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
+    
+    - name: Cache cargo build
+      uses: actions/cache@v3
+      with:
+        path: target
+        key: ${{ runner.os }}-cargo-build-${{ hashFiles('**/Cargo.toml') }}
+    
+    - name: Clippy Lint
+      run: cargo clippy --all-targets --all-features -- -D warnings
+
+    - name: Format Check
+      run: cargo fmt -- --check
+
+    - name: Run Tests
+      run: cargo test --verbose
+
+  frontend_env_setup:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Cache node modules
+      uses: actions/cache@v3
+      with:
+        path: |
+          node_modules
+          src/day_two_frontend/node_modules
+        key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+
+    - name: Install dependencies (root)
+      run: npm install
+
+    - name: Install dependencies (frontend)
+      run: npm install
+      working-directory: src/day_two_frontend/
+
+    - name: Run Prettier
+      run: npm run format
+      working-directory: src/day_two_frontend/
+
+    - name: Run Vitest
+      run: npm test
+      working-directory: src/day_two_frontend/
+      env:
+        CI: true
