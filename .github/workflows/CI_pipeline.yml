@@ -50,7 +50,7 @@ jobs:
       with:
         path: |
           node_modules
-          src/day_two_frontend/node_modules
+          src/SmilleyBall_frontend/node_modules
         key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
 
     - name: Install dependencies (root)
@@ -58,14 +58,14 @@ jobs:
 
     - name: Install dependencies (frontend)
       run: npm install
-      working-directory: src/day_two_frontend/
+      working-directory: src/SmilleyBall_frontend/
 
     - name: Run Prettier
       run: npm run format
-      working-directory: src/day_two_frontend/
+      working-directory: src/SmilleyBall_frontend/
 
     - name: Run Vitest
       run: npm test
-      working-directory: src/day_two_frontend/
+      working-directory: src/SmilleyBall_frontend/
       env:
         CI: true
