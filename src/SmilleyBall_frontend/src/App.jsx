@@ -1,8 +1,8 @@
-import { useState } from 'react';
-import { SmilleyBall_backend } from 'declarations/SmilleyBall_backend';
+import { useState } from "react";
+import { SmilleyBall_backend } from "declarations/SmilleyBall_backend";
 
 function App() {
-  const [greeting, setGreeting] = useState('');
+  const [greeting, setGreeting] = useState("");
 
   function handleSubmit(event) {
     event.preventDefault();
