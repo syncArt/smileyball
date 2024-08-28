@@ -1,5 +1,5 @@
 [package]
-name = "SmilleyBall_backend"
+name = "smileyball_backend"
 version = "0.1.0"
 edition = "2021"
 

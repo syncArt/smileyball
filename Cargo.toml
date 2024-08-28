@@ -1,5 +1,5 @@
 [workspace]
 members = [
-    "src/SmilleyBall_backend"
+    "src/smileyball_backend"
 ]
 resolver = "2"

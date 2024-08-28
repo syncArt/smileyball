@@ -1,19 +1,19 @@
 {
   "canisters": {
-    "SmilleyBall_backend": {
-      "candid": "src/SmilleyBall_backend/SmilleyBall_backend.did",
-      "package": "SmilleyBall_backend",
+    "smileyball_backend": {
+      "candid": "src/smileyball_backend/smileyball_backend.did",
+      "package": "smileyball_backend",
       "type": "rust"
     },
-    "SmilleyBall_frontend": {
+    "smileyball_frontend": {
       "dependencies": [
-        "SmilleyBall_backend"
+        "smileyball_backend"
       ],
       "source": [
-        "src/SmilleyBall_frontend/dist"
+        "src/smileyball_frontend/dist"
       ],
       "type": "assets",
-      "workspace": "SmilleyBall_frontend"
+      "workspace": "smileyball_frontend"
     },
     "internet_identity": {
       "candid": "https://github.com/dfinity/internet-identity/releases/latest/download/internet_identity.did",
