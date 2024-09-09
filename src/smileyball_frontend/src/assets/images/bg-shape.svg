@@ -1,0 +1,40 @@
+<svg width="355" height="904" viewBox="0 0 355 904" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <g filter="url(#filter0_f_574_154)">
+        <path d="M-44.9999 78L-45 824.604C87.7481 842.095 292.53 691.675 276.065 569.739C258.801 441.884 77.9723 510.271 157.21 337.862C220.599 199.935 48.8156 107.151 -44.9999 78Z" fill="#FD461E"/>
+        <path d="M-44.9999 78L-45 824.604C87.7481 842.095 292.53 691.675 276.065 569.739C258.801 441.884 77.9723 510.271 157.21 337.862C220.599 199.935 48.8156 107.151 -44.9999 78Z" fill="url(#paint0_linear_574_154)"/>
+        <path d="M-44.9999 78L-45 824.604C87.7481 842.095 292.53 691.675 276.065 569.739C258.801 441.884 77.9723 510.271 157.21 337.862C220.599 199.935 48.8156 107.151 -44.9999 78Z" stroke="black"/>
+    </g>
+    <defs>
+        <filter id="filter0_f_574_154" x="-122.5" y="0.320312" width="477" height="903.18" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+            <feFlood flood-opacity="0" result="BackgroundImageFix"/>
+            <feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix" result="shape"/>
+            <feGaussianBlur stdDeviation="38.5" result="effect1_foregroundBlur_574_154"/>
+        </filter>
+        <linearGradient id="paint0_linear_574_154" x1="116" y1="826" x2="116" y2="78" gradientUnits="userSpaceOnUse">
+            <stop offset="0.078125" stop-color="#FD1EA4">
+                <animate attributeName="stop-color" values="#FD1EA4;#1E5CFD;#FD1EA4" dur="16s" repeatCount="indefinite" />
+            </stop>
+            <stop offset="0.255208" stop-color="#9B1EFD">
+                <animate attributeName="stop-color" values="#9B1EFD;#1EFDC7;#9B1EFD" dur="16s" repeatCount="indefinite" />
+            </stop>
+            <stop offset="0.375" stop-color="#1E5CFD">
+                <animate attributeName="stop-color" values="#1E5CFD;#9BFD1E;#1E5CFD" dur="16s" repeatCount="indefinite" />
+            </stop>
+            <stop offset="0.494792" stop-color="#1EFDC7">
+                <animate attributeName="stop-color" values="#1EFDC7;#FDF41E;#1EFDC7" dur="16s" repeatCount="indefinite" />
+            </stop>
+            <stop offset="0.625" stop-color="#9BFD1E">
+                <animate attributeName="stop-color" values="#9BFD1E;#FD961E;#9BFD1E" dur="16s" repeatCount="indefinite" />
+            </stop>
+            <stop offset="0.755208" stop-color="#FDF41E">
+                <animate attributeName="stop-color" values="#FDF41E;#FD1EA4;#FDF41E" dur="16s" repeatCount="indefinite" />
+            </stop>
+            <stop offset="0.880208" stop-color="#FD961E">
+                <animate attributeName="stop-color" values="#FD961E;#9B1EFD;#FD961E" dur="16s" repeatCount="indefinite" />
+            </stop>
+            <stop offset="1" stop-color="white" stop-opacity="0">
+                <animate attributeName="stop-color" values="white;#FD1EA4;white" dur="16s" repeatCount="indefinite" />
+            </stop>
+        </linearGradient>
+    </defs>
+</svg>

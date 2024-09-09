@@ -1,6 +1,7 @@
 {
     "compilerOptions": {
         "strict": true,
+        "composite": true,
         "target": "ES2020",
         "experimentalDecorators": true,
         "strictPropertyInitialization": false,
@@ -8,4 +9,8 @@
         "allowJs": true,
         "outDir": "HACK_BECAUSE_OF_ALLOW_JS"
     },
+    "include": ["src/**/*"],
+    "references": [
+        { "path": "./src/smileyball_frontend" }
+    ]
 }
