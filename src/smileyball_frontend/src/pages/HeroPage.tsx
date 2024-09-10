@@ -1,4 +1,4 @@
-import { TopSong } from "../components";
+import { TopSong } from "@/modules";
 
 export const HeroPage = () => {
   return (

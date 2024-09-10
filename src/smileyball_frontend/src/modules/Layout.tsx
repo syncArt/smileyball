@@ -1,4 +1,5 @@
-import { BackgroundShapes, ContentBox, NavBar, TopBar } from "../components";
+import { BackgroundShapes, ContentBox, NavBar } from "@/components";
+import { TopBar } from "@/modules";
 import { Outlet } from "react-router-dom";
 
 export const Layout = () => {

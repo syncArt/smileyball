@@ -1,4 +1,4 @@
-import BgShapeSVG from "../assets/images/bg-shape.svg";
+import BgShapeSVG from "@/assets/images/bg-shape.svg";
 
 export const BackgroundShapes = () => {
   return (
