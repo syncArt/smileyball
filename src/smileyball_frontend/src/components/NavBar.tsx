@@ -1,5 +1,5 @@
-import LoginIcon from "../assets/images/login-icon.svg";
-import SmileyballText from "../assets/images/smileyball.svg";
+import LoginIcon from "@/assets/images/login-icon.svg";
+import SmileyballText from "@/assets/images/smileyball.svg";
 
 export const NavBar = () => {
   return (

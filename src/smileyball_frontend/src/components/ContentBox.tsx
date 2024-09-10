@@ -1,4 +1,4 @@
-import BottomDecoration from "../assets/images/bottom-decoration.svg";
+import BottomDecoration from "@/assets/images/bottom-decoration.svg";
 import { ReactNode } from "react";
 
 export const ContentBox = ({ children }: { children: ReactNode }) => {

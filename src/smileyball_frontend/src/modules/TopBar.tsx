@@ -1,9 +1,9 @@
-import { Logo } from "./Logo";
-import { MarqueeBar } from "./MarqueeBar";
+import { Logo } from "@/components";
+import { MarqueeBar } from "@/modules";
 
 export const TopBar = () => {
   return (
-    <div className="flex w-full mb-2 justify-center gap-10">
+    <div className="mb-2 flex w-full justify-center gap-10">
       <MarqueeBar marqueeText="test" label="testowy label" />
       <Logo />
       <MarqueeBar position="right" marqueeText="test" label="test" />

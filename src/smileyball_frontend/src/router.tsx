@@ -1,6 +1,6 @@
 import { createBrowserRouter } from "react-router-dom";
-import { Layout } from "./modules";
-import { HeroPage, SongRequestPage } from "./pages";
+import { Layout } from "@/modules";
+import { HeroPage, SongRequestPage } from "@/pages";
 
 export const router = createBrowserRouter([
   {

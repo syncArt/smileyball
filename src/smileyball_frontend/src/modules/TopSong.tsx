@@ -1,5 +1,5 @@
-import ListenArrow from "../assets/images/listen-arrow.svg";
-import { ProgressBar } from "./ProgressBar";
+import ListenArrow from "@/assets/images/listen-arrow.svg";
+import { ProgressBar } from "@/components";
 
 export const TopSong = () => {
   const songTitle = "SONG TITLE";
