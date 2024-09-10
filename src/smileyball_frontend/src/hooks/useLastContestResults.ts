@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 export const useLastContestResults = () => {
 
@@ -19,8 +19,6 @@ export const useLastContestResults = () => {
     },
   }
 
-  const [lastContestResults, setLastContestResults] = useState();
-  useEffect(() => {}, []);
-
+  const [lastContestResults, setLastContestResults] = useState(apiResponseMock);
   return [lastContestResults, setLastContestResults];
 };
