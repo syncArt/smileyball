@@ -1,14 +1,16 @@
 import Marquee from "react-fast-marquee";
 
+type MarqueeBarProps = {
+  marqueeText: string;
+  label: string;
+  position?: "left" | "right";
+};
+
 export const MarqueeBar = ({
   marqueeText,
   label,
   position = "left",
-}: {
-  marqueeText: string;
-  label: string;
-  position?: "left" | "right";
-}) => {
+}: MarqueeBarProps) => {
   if (position === "left") {
     return (
       <div className="rounded-medium w-marqueeWidth relative flex h-[24px] flex-shrink self-center overflow-hidden bg-gradient-to-r from-marqueeLeftStart to-marqueeLeftEnd">

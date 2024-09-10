@@ -24,7 +24,7 @@ export const NavBar = () => {
           VOTE
         </a>
       </div>
-      <div className="absolute flex w-full justify-center">
+      <div className="absolute pointer-events-none flex w-full justify-center">
         <SmileyballText />
       </div>
       <div className="font-spaceMono mr-[20px] flex justify-end font-bold italic">

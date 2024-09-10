@@ -12,9 +12,9 @@ export default tseslint.config(eslint.configs.recommended, {
   },
   languageOptions: {
     parser: tseslint.parser,
+    globals: globals.browser,
     parserOptions: {
       ecmaVersion: 2020,
-      globals: { ...globals.browser },
       projectService: true,
       tsconfigRootDir: import.meta.dirname,
     },
@@ -31,6 +31,7 @@ export default tseslint.config(eslint.configs.recommended, {
     "@typescript-eslint/no-unsafe-call": "error",
     "@typescript-eslint/no-unsafe-member-access": "error",
     "@typescript-eslint/no-unsafe-return": "error",
+    "no-unused-vars": "warn"
   },
   ignores: ["dist"],
   linterOptions: {
