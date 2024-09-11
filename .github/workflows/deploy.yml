@@ -37,7 +37,7 @@ jobs:
           until dfx ping; do sleep 1; done
           
       - name: Create Canisters
-        run: dfx canister create -all
+        run: dfx canister create --all
         
       - name: Build all canisters including dependencies
         run: dfx build
