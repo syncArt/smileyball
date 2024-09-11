@@ -20,7 +20,15 @@ jobs:
 
       - name: Confirm successful installation
         run: dfx --version
+        
+      - name: Check Rust and Cargo versions
+        run: |
+          rustc --version
+          cargo --version
 
+      - name: Install wasm32-unknown-unknown target for Rust
+        run: rustup target add wasm32-unknown-unknown
+        
       - name: Install Smileyball Identity
         env:
           DFX_DEPLOY_KEY: ${{ secrets.DFX_DEPLOY_KEY }}
