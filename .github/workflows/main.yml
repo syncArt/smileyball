@@ -1,0 +1,42 @@
+name: Build Smileyball Frontend
+on:
+  workflow_run:
+    workflows: ["Setup backend & frontend CI"]
+    types:
+      - completed
+
+jobs:
+  build-and-deploy-frontend:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Restore node modules from cache
+        uses: actions/cache@v3
+        with:
+          path: |
+            node_modules
+            src/smileyball_frontend/node_modules
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+
+      - name: Validate cache
+        run: |
+          if [ ! -d "src/smileyball_frontend/node_modules" ]; then
+            echo "Cache not restored correctly, installing dependencies..."
+            exit 1
+          else
+            echo "Cache validated and dependencies are present."
+          fi
+
+      - name: Build frontend
+        run: npm run build
+        working-directory: src/smileyball_frontend/
+
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: frontend-dist
+          path: src/smileyball_frontend/dist
