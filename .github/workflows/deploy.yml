@@ -6,6 +6,7 @@ on:
 jobs:
   deploy-smileyball:
     runs-on: ubuntu-latest
+    environment: production
     env:
       SMILEYBALL_CANISTER_ID: ${{ secrets.SMILEYBALL_CANISTER_ID }}
       WALLET_CANISTER_ID: ${{ secrets.WALLET_CANISTER_ID }}
