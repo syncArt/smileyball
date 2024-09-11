@@ -1,3 +1,12 @@
+type User = record {
+    username: text;
+    created_at: nat64;
+    is_active: bool;
+    is_admin: bool;
+    avatar_url: opt text;
+}
+
 service : {
     "greet": (text) -> (text) query;
+    "register" : (text) -> ();
 }
