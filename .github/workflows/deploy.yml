@@ -30,6 +30,12 @@ jobs:
           dfx identity import --disable-encryption --force smileyball "$key_pem"
           rm "$key_pem"
 
+      - name: Start DFX server in the background
+        run: |
+          nohup dfx start --background --clean --emulator &
+          # Wait until DFX is ready
+          until dfx ping; do sleep 1; done
+          
       - name: Create Smileyball Frontend Canister
         run: dfx canister create smileyball_frontend
         
@@ -42,3 +48,13 @@ jobs:
           dfx canister --network ic --wallet "$wallet" install --mode upgrade \
             --wasm .dfx/local/canisters/smileyball_frontend/smileyball_frontend.wasm.gz \
             ${{ env.SMILEYBALL_CANISTER_ID }}
+
+      - name: Stop DFX server and clean up processes
+        run: |
+          dfx stop || true 
+          pkill -f 'dfx start' || true 
+          pkill -f 'dfx replica' || true 
+
+      - name: Clean up .dfx folder
+        run: |
+          rm -rf .dfx
