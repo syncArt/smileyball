@@ -1,6 +1,8 @@
+import { TopBar } from "./topBar";
+import { NavBar } from "./navBar";
+import { Footer } from "./footer";
 import { Layout } from "./Layout";
 import { TopSong } from "./TopSong";
-import { TopBar } from "./TopBar";
-import { MarqueeBar } from "./MarqueeBar";
+import { TopBarDesktop } from "./topBar/TopBarDesktop";
 
-export { Layout, TopSong, TopBar, MarqueeBar };
+export { Layout, Footer, TopBar, NavBar, TopSong, TopBarDesktop };

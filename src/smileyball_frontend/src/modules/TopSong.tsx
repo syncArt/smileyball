@@ -7,8 +7,8 @@ export const TopSong = () => {
   const boxName = "BEST NEW !";
 
   return (
-    <div className="relative flex h-full w-full">
-      <div className="bg-grey rounded-medium relative z-[2] flex h-full w-[calc(100%-50px)] flex-col justify-start gap-1 border-4 border-white p-[30px]">
+    <section className="relative flex w-full max-h-[200px]">
+      <div className="bg-grey rounded-medium relative z-[2] flex w-[calc(100%-50px)] flex-col justify-start gap-1 border-4 border-white p-[30px]">
         <div className="font-95 flex font-sequel100Black text-[33px] italic leading-[33px] text-secondary">
           {boxName}
         </div>
@@ -32,6 +32,6 @@ export const TopSong = () => {
           </div>
         </div>
       </div>
-    </div>
+    </section>
   );
 };
