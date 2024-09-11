@@ -36,8 +36,8 @@ jobs:
           # Wait until DFX is ready
           until dfx ping; do sleep 1; done
           
-      - name: Create Smileyball Frontend Canister
-        run: dfx canister create smileyball_frontend
+      - name: Create Canisters
+        run: dfx canister create -all
         
       - name: Build all canisters including dependencies
         run: dfx build
