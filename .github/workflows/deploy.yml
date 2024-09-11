@@ -1,0 +1,38 @@
+name: Deploy Smileyball Frontend
+
+on:
+  workflow_dispatch:
+
+jobs:
+  deploy-smileyball:
+    runs-on: ubuntu-latest
+    env:
+      SMILEYBALL_CANISTER_ID: ${{ secrets.SMILEYBALL_CANISTER_ID }}
+      WALLET_CANISTER_ID: ${{ secrets.WALLET_CANISTER_ID }}
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Set up DFX
+        run: |
+          sh -ci "$(curl -fsSL https://internetcomputer.org/install.sh)"
+
+      - name: Install Smileyball
+        env:
+          DFX_DEPLOY_KEY: ${{ secrets.DFX_DEPLOY_KEY }}
+        run: |
+          key_pem=$(mktemp)
+          printenv "DFX_DEPLOY_KEY" > "$key_pem"
+          dfx identity import --disable-encryption --force smileyball "$key_pem"
+          rm "$key_pem"
+
+      - name: Use Smileyball Identity
+        run: dfx identity use smileyball
+
+      - name: Deploy Smileyball Frontend
+        run: |
+          wallet="${{ env.WALLET_CANISTER_ID }}"
+          dfx canister --network ic --wallet "$wallet" install --mode upgrade \
+            --wasm smileyball_frontend.wasm.gz \
+            ${{ env.SMILEYBALL_CANISTER_ID }}
