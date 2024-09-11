@@ -1,7 +1,7 @@
 name: Deploy Smileyball Frontend
 
 on:
-  workflow_dispatch:
+  workflow_dispatch:  # Workflow uruchamiany tylko ręcznie
 
 jobs:
   deploy-smileyball:
@@ -14,15 +14,13 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v2
 
-      - name: Set up DFX
-        run: |
-          DFX_VERSION=latest
-          curl -o dfx_installer.sh -fsSL https://internetcomputer.org/install.sh
-          chmod +x dfx_installer.sh
-          DFX_VERSION=$DFX_VERSION ./dfx_installer.sh --no-modify-path 
-          echo "$HOME/.local/share/dfx/bin" >> $GITHUB_PATH 
+      - name: Install dfx
+        uses: dfinity/setup-dfx@main
 
-      - name: Install Smileyball
+      - name: Confirm successful installation
+        run: dfx --version
+
+      - name: Install Smileyball Identity
         env:
           DFX_DEPLOY_KEY: ${{ secrets.DFX_DEPLOY_KEY }}
         run: |
