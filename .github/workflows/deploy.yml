@@ -39,8 +39,8 @@ jobs:
       - name: Create Smileyball Frontend Canister
         run: dfx canister create smileyball_frontend
         
-      - name: Build Smileyball Frontend
-        run: dfx build smileyball_frontend
+      - name: Build all canisters including dependencies
+        run: dfx build
 
       - name: Deploy Smileyball Frontend
         run: |
