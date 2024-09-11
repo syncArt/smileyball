@@ -30,12 +30,12 @@ jobs:
           dfx identity import --disable-encryption --force smileyball "$key_pem"
           rm "$key_pem"
 
-      - name: Use Smileyball Identity
-        run: dfx identity use smileyball
+      - name: Build Smileyball Frontend
+        run: dfx build smileyball_frontend
 
       - name: Deploy Smileyball Frontend
         run: |
           wallet="${{ env.WALLET_CANISTER_ID }}"
           dfx canister --network ic --wallet "$wallet" install --mode upgrade \
-            --wasm smileyball_frontend.wasm.gz \
+            --wasm .dfx/local/canisters/smileyball_frontend/smileyball_frontend.wasm.gz \
             ${{ env.SMILEYBALL_CANISTER_ID }}
