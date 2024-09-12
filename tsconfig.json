@@ -1,16 +1,23 @@
 {
-    "compilerOptions": {
-        "strict": true,
-        "composite": true,
-        "target": "ES2020",
-        "experimentalDecorators": true,
-        "strictPropertyInitialization": false,
-        "moduleResolution": "node",
-        "allowJs": true,
-        "outDir": "HACK_BECAUSE_OF_ALLOW_JS"
-    },
-    "include": ["src/**/*"],
-    "references": [
-        { "path": "./src/smileyball_frontend" }
-    ]
+  "compilerOptions": {
+    "strict": true,
+    "target": "ES2020",
+    "experimentalDecorators": true,
+    "strictPropertyInitialization": false,
+    "skipLibCheck": true,
+    "moduleResolution": "node",
+    "allowJs": true,
+    "jsx": "react-jsx",
+    "outDir": "HACK_BECAUSE_OF_ALLOW_JS",
+    "baseUrl": ".",
+    "typeRoots": ["./node_modules/@types", "./node_modules"],
+    "types": ["vite/client"]
+  },
+  "include": ["src/**/*"],
+  "exclude": [
+    "src/smileyball_frontend/dist",
+    "node_modules",
+    "src/smileyball_frontend/node_modules"
+  ],
+  "references": [{ "path": "./src/smileyball_frontend" }]
 }
