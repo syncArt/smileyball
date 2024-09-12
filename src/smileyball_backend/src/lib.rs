@@ -1,11 +1,14 @@
+mod contest_data;
 pub mod user;
 
 use candid::Principal;
+use contest_data::{ContestData, ContestError};
 use ic_cdk::caller;
 use std::{cell::RefCell, collections::HashMap};
 use user::User;
 
 thread_local! {
+    static CONTESTS: RefCell<HashMap<u32, ContestData>> = RefCell::default();
     static USERS: RefCell<HashMap<Principal, User>> = RefCell::default();
 }
 
@@ -23,6 +26,22 @@ fn register_user(nickname: String) {
     }
 
     USERS.with_borrow_mut(|users| users.insert(user, User::new(nickname)));
+}
+
+#[ic_cdk::update]
+fn create_contest(new_contest: ContestData) -> Result<ContestData, ContestError> {
+    CONTESTS.with_borrow(|contests| {
+        if contests.contains_key(&new_contest.contest_id) {
+            return Err(ContestError::DuplicateContest);
+        }
+        Ok(())
+    })?;
+
+    CONTESTS.with_borrow_mut(|contests| {
+        contests.insert(new_contest.contest_id.clone(), new_contest.clone());
+    });
+
+    Ok(new_contest)
 }
 
 #[cfg(test)]
