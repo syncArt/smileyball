@@ -28,7 +28,6 @@ jobs:
         run: |
           rustc --version
           cargo --version
-
       - name: Install wasm32-unknown-unknown target for Rust
         run: rustup target add wasm32-unknown-unknown
         
@@ -86,17 +85,13 @@ jobs:
     
       - name: Deploy Smileyball Frontend on ICP
         run: |
-          wallet="${{ env.WALLET_CANISTER_ID }}"
-          dfx canister --network ic --wallet "$wallet" install --mode upgrade \
-            --wasm .dfx/ic/canisters/smileyball_frontend/smileyball_frontend.wasm.gz \
-            ${{ env.SMILEYBALL_CANISTER_ID }}
-
+          dfx canister install smileyball_frontend --network ic --mode upgrade
+          
       - name: Stop DFX server and clean up processes
         run: |
           dfx stop || true 
           pkill -f 'dfx start' || true 
           pkill -f 'dfx replica' || true 
-
       - name: Clean up .dfx folder
         run: |
           rm -rf .dfx
