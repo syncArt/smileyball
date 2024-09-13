@@ -2,6 +2,7 @@ import HamburgerMenu from "@/assets/images/hamburger-menu.svg";
 import HamburgerMenuArrow from "@/assets/images/hamburger-menu-arrow.svg";
 import LoginIcon from "@/assets/images/login-icon.svg";
 import { useState } from "react";
+import { useNavBarData } from "@/hooks/useNavBarData";
 
 type NavBarMobileMenuItemProps = {
   text: string;
@@ -9,9 +10,9 @@ type NavBarMobileMenuItemProps = {
 };
 
 const NavBarMobileMenuItem = ({ text, link }: NavBarMobileMenuItemProps) => (
-  <li className="flex flex-nowrap items-center">
+  <li className="flex flex-nowrap items-center uppercase">
     <HamburgerMenuArrow className="mr-2 flex" />
-    <a className="font-spaceMono flex text-white" href={link}>
+    <a className="flex font-spaceMono text-white" href={link}>
       {text}
     </a>
   </li>
@@ -19,8 +20,10 @@ const NavBarMobileMenuItem = ({ text, link }: NavBarMobileMenuItemProps) => (
 
 export const NavBarMobile = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const navBarData = useNavBarData();
+
   return (
-    <div className="laptop:hidden left-0 top-0 flex w-full">
+    <div className="left-0 top-0 flex w-full laptop:hidden">
       <HamburgerMenu
         className={`${isOpen ? "animate-rotate90" : "animate-rotateBack"} absolute right-4 top-12 cursor-pointer`}
         onClick={() => setIsOpen(!isOpen)}
@@ -29,14 +32,17 @@ export const NavBarMobile = () => {
         className={`${isOpen ? "animate-fullMenuHeight" : "animate-zeroMenuHeight"} flex w-full`}
       >
         <ul className="flex w-full flex-col gap-4">
-          <NavBarMobileMenuItem link="#" text="Home" />
-          <NavBarMobileMenuItem link="#" text="Current contest" />
-          <NavBarMobileMenuItem link="#" text="Last winners" />
-          <NavBarMobileMenuItem link="#" text="About" />
+          {navBarData.map((item) => (
+            <NavBarMobileMenuItem
+              key={`navbar-mobile-${item.name}`}
+              link={item.link}
+              text={item.name}
+            />
+          ))}
 
           <li className="flex w-full items-center justify-end pr-8">
             <a
-              className="font-spaceMono flex w-full items-center justify-end text-white"
+              className="flex w-full items-center justify-end font-spaceMono text-white"
               href="#"
             >
               LOGIN
