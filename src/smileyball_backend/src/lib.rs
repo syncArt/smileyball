@@ -28,6 +28,22 @@ fn register_user(nickname: String) {
     USERS.with_borrow_mut(|users| users.insert(user, User::new(nickname)));
 }
 
+#[ic_cdk::query]
+fn get_contests() -> HashMap<u32, ContestData> {
+    CONTESTS.with_borrow(|contests| contests.clone())
+}
+
+#[ic_cdk::query]
+fn get_contests_by_id(contest_id: u32) -> Result<ContestData, ContestError> {
+    CONTESTS.with_borrow(|contests| {
+        if let Some(contest) = contests.get(&contest_id) {
+            Ok(contest.clone())
+        } else {
+            Err(ContestError::KeyNotFound)
+        }
+    })
+}
+
 #[ic_cdk::update]
 fn create_contest(new_contest: ContestData) -> Result<ContestData, ContestError> {
     CONTESTS.with_borrow(|contests| {
@@ -44,9 +60,29 @@ fn create_contest(new_contest: ContestData) -> Result<ContestData, ContestError>
     Ok(new_contest)
 }
 
+#[ic_cdk::update]
+fn remove_contest(contest_id: u32) -> Result<(), ContestError> {
+    CONTESTS.with_borrow_mut(|contests| match contests.remove(&contest_id) {
+        Some(_) => Ok(()),
+        None => Err(ContestError::KeyNotFound),
+    })
+}
+
+#[ic_cdk::update]
+fn update_contest(contest_id: u32, updated_contest: ContestData) -> Result<(), ContestError> {
+    let map_contains_key = CONTESTS.with_borrow(|contests| contests.contains_key(&contest_id));
+
+    if !map_contains_key {
+        return Err(ContestError::KeyNotFound);
+    }
+    CONTESTS.with_borrow_mut(|contests| contests.insert(contest_id, updated_contest));
+
+    Ok(())
+}
+
 #[cfg(test)]
 mod tests {
-    use chrono::Utc;
+    use ic_cdk::api::time;
     use user::User;
 
     use super::*;
@@ -62,10 +98,13 @@ mod tests {
 
         let test_username = String::from("test_username");
         let is_user_admin = false;
-        let present_date = Utc::now();
+        let present_date = time();
 
         assert_eq!(test_username, user.username);
         assert_eq!(is_user_admin, user.is_admin);
         assert!(user.created_at <= present_date);
     }
 }
+
+// Enable Candid export
+ic_cdk::export_candid!();
