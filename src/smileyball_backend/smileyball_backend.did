@@ -1,12 +1,38 @@
-type User = record {
-    username: text;
-    created_at: nat64;
-    is_active: bool;
-    is_admin: bool;
-    avatar_url: opt text;
-}
-
+type ContestData = record {
+  contest_description : text;
+  closed_by : opt principal;
+  contest_id : nat32;
+  contest_songs : vec record { nat32; Song };
+  contest_stage : ContestStage;
+  jury : vec text;
+  added_by : principal;
+  status_value : Status;
+  price_pool_init : nat64;
+  created_at : nat64;
+  lobby_songs : vec record { nat32; Song };
+  total_votes : nat32;
+  contest_title : text;
+  status_info : text;
+  songs_in_lobby_amount : nat32;
+  finished_at : nat64;
+};
+type ContestError = variant { DuplicateContest; InvalidData; KeyNotFound };
+type ContestStage = variant { LATE; BEGINNING; MIDDLE };
+type Result = variant { Ok : ContestData; Err : ContestError };
+type Result_1 = variant { Ok; Err : ContestError };
+type Song = record {
+  song_title : text;
+  added_by : principal;
+  jury_votes : vec record { nat32; nat32 };
+  song_id : nat32;
+};
+type Status = variant { CANCELED; InProgres; STOPPED };
 service : {
-    "greet": (text) -> (text) query;
-    "register" : (text) -> ();
+  create_contest : (ContestData) -> (Result);
+  get_contests : () -> (vec record { nat32; ContestData }) query;
+  get_contests_by_id : (nat32) -> (Result) query;
+  greet : (text) -> (text) query;
+  register_user : (text) -> ();
+  remove_contest : (nat32) -> (Result_1);
+  update_contest : (nat32, ContestData) -> (Result_1);
 }
