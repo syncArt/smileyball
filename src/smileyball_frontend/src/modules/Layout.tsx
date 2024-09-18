@@ -9,10 +9,8 @@ export const Layout = () => {
       <div className="align-center mt-3 flex w-full max-w-[1200px] flex-col justify-center">
         <TopBar />
         <NavBar />
-        <ContentBox className="min-h-screen">
-          <Outlet />
-        </ContentBox>
-        <span id="separator" className="laptop:h-[300px] h-[600px]" />
+        <Outlet />
+        <span id="separator" className="h-[600px] laptop:h-[300px]" />
         <Footer />
       </div>
     </main>
