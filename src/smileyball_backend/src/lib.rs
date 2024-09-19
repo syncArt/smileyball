@@ -1,20 +1,18 @@
 mod contest_data;
+pub mod song;
 pub mod user;
 
 use candid::Principal;
 use contest_data::{ContestData, ContestError};
 use ic_cdk::caller;
+use song::{Song, SongError};
 use std::{cell::RefCell, collections::HashMap};
 use user::User;
 
 thread_local! {
+    static SONGS: RefCell<HashMap<u32, Song>> = RefCell::default();
     static CONTESTS: RefCell<HashMap<u32, ContestData>> = RefCell::default();
     static USERS: RefCell<HashMap<Principal, User>> = RefCell::default();
-}
-
-#[ic_cdk::query]
-fn greet(name: String) -> String {
-    format!("Hello, {}!", name)
 }
 
 #[ic_cdk::update]
@@ -45,7 +43,7 @@ fn get_contests_by_id(contest_id: u32) -> Result<ContestData, ContestError> {
 }
 
 #[ic_cdk::update]
-fn create_contest(new_contest: ContestData) -> Result<ContestData, ContestError> {
+fn create_contest(new_contest: ContestData) -> Result<(), ContestError> {
     CONTESTS.with_borrow(|contests| {
         if contests.contains_key(&new_contest.contest_id) {
             return Err(ContestError::DuplicateContest);
@@ -53,11 +51,9 @@ fn create_contest(new_contest: ContestData) -> Result<ContestData, ContestError>
         Ok(())
     })?;
 
-    CONTESTS.with_borrow_mut(|contests| {
+    Ok(CONTESTS.with_borrow_mut(|contests| {
         contests.insert(new_contest.contest_id.clone(), new_contest.clone());
-    });
-
-    Ok(new_contest)
+    }))
 }
 
 #[ic_cdk::update]
@@ -80,17 +76,65 @@ fn update_contest(contest_id: u32, updated_contest: ContestData) -> Result<(), C
     Ok(())
 }
 
+// SONGS hashmap CRUD
+
+#[ic_cdk::query]
+fn get_songs() -> HashMap<u32, Song> {
+    SONGS.with_borrow(|songs| songs.clone())
+}
+
+#[ic_cdk::query]
+fn get_song_by_id(song_id: u32) -> Result<Song, SongError> {
+    SONGS.with_borrow(|songs| {
+        if let Some(song) = songs.get(&song_id) {
+            Ok(song.clone())
+        } else {
+            Err(SongError::SongNotFound)
+        }
+    })
+}
+
+#[ic_cdk::update]
+fn add_song(new_song: Song) -> Result<(), SongError> {
+    SONGS.with_borrow_mut(|songs| {
+        if !songs.contains_key(&new_song.song_id) {
+            songs.insert(new_song.song_id, new_song);
+            Ok(())
+        } else {
+            Err(SongError::DuplicateSong)
+        }
+    })
+}
+
+#[ic_cdk::update]
+fn remove_song(song_id: u32) -> Result<(), String> {
+    SONGS.with_borrow_mut(|songs| match songs.remove(&song_id) {
+        Some(_) => Ok(()),
+        None => Err(String::from(
+            "Cannot remove the song, this item doesn't exist",
+        )),
+    })
+}
+
+#[ic_cdk::update]
+fn update_song(song_id: u32, updated_song: Song) -> Result<(), String> {
+    let map_contains_song = SONGS.with_borrow(|songs| songs.contains_key(&song_id));
+
+    if !map_contains_song {
+        return Err(format!("Song with id: {} doesn't exist", song_id));
+    }
+
+    SONGS.with_borrow_mut(|songs| songs.insert(song_id, updated_song));
+
+    Ok(())
+}
+
 #[cfg(test)]
 mod tests {
     use ic_cdk::api::time;
     use user::User;
 
     use super::*;
-
-    #[test]
-    fn first_pipeline_test() {
-        assert_eq!(greet(String::from("Pablo")), "Hello, Pablo!");
-    }
 
     #[test]
     fn user_creation_should_succeed() {

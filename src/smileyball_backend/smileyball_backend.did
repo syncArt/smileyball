@@ -3,7 +3,6 @@ type ContestData = record {
   closed_by : opt principal;
   contest_id : nat32;
   contest_songs : vec record { nat32; Song };
-  contest_stage : ContestStage;
   jury : vec text;
   added_by : principal;
   status_value : Status;
@@ -17,22 +16,32 @@ type ContestData = record {
   finished_at : nat64;
 };
 type ContestError = variant { DuplicateContest; InvalidData; KeyNotFound };
-type ContestStage = variant { LATE; BEGINNING; MIDDLE };
-type Result = variant { Ok : ContestData; Err : ContestError };
+type Result = variant { Ok; Err : SongError };
 type Result_1 = variant { Ok; Err : ContestError };
+type Result_2 = variant { Ok : ContestData; Err : ContestError };
+type Result_3 = variant { Ok : Song; Err : SongError };
+type Result_4 = variant { Ok; Err : text };
 type Song = record {
+  duration : text;
   song_title : text;
   added_by : principal;
-  jury_votes : vec record { nat32; nat32 };
+  author : text;
+  genre : text;
   song_id : nat32;
+  cover_url : opt text;
 };
-type Status = variant { CANCELED; InProgres; STOPPED };
+type SongError = variant { SongNotFound; DuplicateSong };
+type Status = variant { InProgres; STOPPED };
 service : {
-  create_contest : (ContestData) -> (Result);
+  add_song : (Song) -> (Result);
+  create_contest : (ContestData) -> (Result_1);
   get_contests : () -> (vec record { nat32; ContestData }) query;
-  get_contests_by_id : (nat32) -> (Result) query;
-  greet : (text) -> (text) query;
+  get_contests_by_id : (nat32) -> (Result_2) query;
+  get_song_by_id : (nat32) -> (Result_3) query;
+  get_songs : () -> (vec record { nat32; Song }) query;
   register_user : (text) -> ();
   remove_contest : (nat32) -> (Result_1);
+  remove_song : (nat32) -> (Result_4);
   update_contest : (nat32, ContestData) -> (Result_1);
+  update_song : (nat32, Song) -> (Result_4);
 }
