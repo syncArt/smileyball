@@ -12,7 +12,10 @@ export default tseslint.config(eslint.configs.recommended, {
   },
   languageOptions: {
     parser: tseslint.parser,
-    globals: globals.browser,
+    globals: {
+      ...globals.browser,
+      ...globals.node
+    },
     parserOptions: {
       ecmaVersion: 2020,
       projectService: true,

@@ -12,9 +12,10 @@
     "lint": "eslint 'src/**/*.{js,jsx,ts,tsx}'"
   },
   "dependencies": {
-    "@dfinity/agent": "^1.4.0",
-    "@dfinity/candid": "^1.4.0",
-    "@dfinity/principal": "^1.4.0",
+    "@dfinity/agent": "^2.1.1",
+    "@dfinity/auth-client": "^2.1.1",
+    "@dfinity/candid": "^2.1.1",
+    "@dfinity/principal": "^2.1.1",
     "@testing-library/jest-dom": "^6.5.0",
     "@testing-library/react": "^16.0.0",
     "@vitest/ui": "^2.0.5",

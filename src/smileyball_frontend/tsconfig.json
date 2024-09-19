@@ -23,7 +23,8 @@
     "types": ["vite/client"],
     "baseUrl": ".",
     "paths": {
-      "@/*": ["./src/*"]
+      "@/*": ["./src/*"],
+      "declarations/*": ["../declarations/*"]
     }
   },
   "include": ["vite.config.ts", "src/**/*", "tests/**/*"],
