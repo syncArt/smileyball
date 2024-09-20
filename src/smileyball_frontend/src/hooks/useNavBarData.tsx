@@ -1,8 +1,8 @@
 export const useNavBarData = () => {
   return [
     {
-      name: "topList",
-      link: "/topList",
+      name: "create contest",
+      link: "/create-contest",
     },
     {
       name: "requests",
