@@ -19,6 +19,7 @@ module.exports = {
       orange: "#FEB241",
       blue: "#00B3FF",
       grey: "#232323",
+      error: "#F82E2E",
       ...marquee.colors,
     },
     extend: {

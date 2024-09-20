@@ -44,7 +44,7 @@ export const NavBarDesktop = () => {
   }, [isAuthenticated]);
 
   return (
-    <nav className="relative mb-2 hidden h-[50px] w-full items-center justify-between text-[18px] laptop:flex">
+    <nav className="relative mb-2 hidden mt-2 w-full items-center justify-between text-[18px] laptop:flex">
       <div className="ml-[20px] flex gap-[20px] font-spaceMono font-bold italic">
         {navBarData.map((item) => (
           <NavBarDesktopMenuItem

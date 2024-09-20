@@ -26,7 +26,9 @@ type AuthContextType = {
   identity: Identity | null;
   principal: Principal | null;
   whoamiActor: any;
-}
+  loading: boolean;
+};
+
 const AuthContext = createContext<AuthContextType | null>(null);
 
 export const useAuthClient = (options: AuthConfig = defaultOptions) => {
@@ -36,14 +38,14 @@ export const useAuthClient = (options: AuthConfig = defaultOptions) => {
   const [principal, setPrincipal] = useState<Principal | null>(null);
   const [whoamiActor, setWhoamiActor] =
     useState<ActorSubclass<_SERVICE> | null>(null);
+  const [loading, setLoading] = useState(true); // Stan ładowania
 
   useEffect(() => {
-    if (options.createOptions) {
-      AuthClient.create(options.createOptions).then(async (client) => {
-        updateClient(client);
-      });
-    }
-  }, [options.createOptions]);
+    AuthClient.create(options.createOptions).then(async (client) => {
+      await updateClient(client);
+      setLoading(false);
+    });
+  }, []);
 
   const login = () => {
     authClient?.login({
@@ -92,6 +94,7 @@ export const useAuthClient = (options: AuthConfig = defaultOptions) => {
     identity,
     principal,
     whoamiActor,
+    loading,
   };
 };
 
@@ -101,7 +104,11 @@ export const useAuthClient = (options: AuthConfig = defaultOptions) => {
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const auth = useAuthClient();
 
-  return <AuthContext.Provider value={auth as AuthContextType}>{children}</AuthContext.Provider>;
+  return (
+    <AuthContext.Provider value={auth as AuthContextType}>
+      {children}
+    </AuthContext.Provider>
+  );
 };
 
 export const useAuth = () => {
