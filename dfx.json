@@ -17,6 +17,7 @@
     },
     "user_identity": {
       "type": "pull",
+      "id": "2mzsz-waaaa-aaaan-qmptq-cai",
       "wasm": "https://github.com/syncArt/users/releases/latest/download/users_inter_rs.wasm"
     },
     "internet_identity": {
