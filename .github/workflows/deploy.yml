@@ -52,6 +52,15 @@ jobs:
           
       - name: Create Canisters
         run: dfx canister create --all
+          
+      - name: Pull deps
+        run: dfx deps pull
+          
+      - name: Init deps arguments
+        run: dfx deps init
+          
+      - name: Init deps deploy
+        run: dfx deps deploy
         
       - name: Build all canisters including dependencies
         run: dfx build --ic
