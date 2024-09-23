@@ -55,12 +55,12 @@ jobs:
           
       - name: Init deps arguments
         run: dfx deps init
-
-      - name: Deploy deps
-        run: dfx deps deploy
         
       - name: Create Canisters
         run: dfx canister create --all
+
+      - name: Deploy deps
+        run: dfx deps deploy
         
       - name: Build local [required to generate candid types]
         run: dfx build
