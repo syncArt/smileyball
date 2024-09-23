@@ -6,13 +6,13 @@ use std::fmt::{Display, Formatter};
 
 #[derive(Clone, Deserialize, CandidType)]
 pub struct Song {
-    pub song_id: u32,
+    pub spotify_song_id: u32,
     pub song_title: String,
-    pub author: String,
-    pub genre: String,
-    pub duration: String,
-    pub cover_url: Option<String>,
-    pub added_by: Principal,
+    // pub author: String,
+    // pub genre: String,
+    // pub duration: String,
+    // pub cover_url: Option<String>,
+    // pub added_by: Principal,
 }
 
 #[derive(Debug, CandidType)]

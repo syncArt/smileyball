@@ -1,19 +1,7 @@
 type ContestData = record {
-  contest_description : text;
-  closed_by : opt principal;
   contest_id : nat32;
   contest_songs : vec record { nat32; Song };
-  jury : vec text;
-  added_by : principal;
-  status_value : Status;
-  price_pool_init : nat64;
-  created_at : nat64;
-  lobby_songs : vec record { nat32; Song };
-  total_votes : nat32;
   contest_title : text;
-  status_info : text;
-  songs_in_lobby_amount : nat32;
-  finished_at : nat64;
 };
 type ContestError = variant { DuplicateContest; InvalidData; KeyNotFound };
 type Result = variant { Ok; Err : SongError };
@@ -21,17 +9,8 @@ type Result_1 = variant { Ok; Err : ContestError };
 type Result_2 = variant { Ok : ContestData; Err : ContestError };
 type Result_3 = variant { Ok : Song; Err : SongError };
 type Result_4 = variant { Ok; Err : text };
-type Song = record {
-  duration : text;
-  song_title : text;
-  added_by : principal;
-  author : text;
-  genre : text;
-  song_id : nat32;
-  cover_url : opt text;
-};
+type Song = record { song_title : text; song_id : nat32 };
 type SongError = variant { SongNotFound; DuplicateSong };
-type Status = variant { InProgres; STOPPED };
 service : {
   add_song : (Song) -> (Result);
   create_contest : (ContestData) -> (Result_1);

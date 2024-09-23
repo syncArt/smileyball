@@ -97,8 +97,8 @@ fn get_song_by_id(song_id: u32) -> Result<Song, SongError> {
 #[ic_cdk::update]
 fn add_song(new_song: Song) -> Result<(), SongError> {
     SONGS.with_borrow_mut(|songs| {
-        if !songs.contains_key(&new_song.song_id) {
-            songs.insert(new_song.song_id, new_song);
+        if !songs.contains_key(&new_song.spotify_song_id) {
+            songs.insert(new_song.spotify_song_id, new_song);
             Ok(())
         } else {
             Err(SongError::DuplicateSong)
