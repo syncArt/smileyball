@@ -59,6 +59,9 @@ jobs:
       - name: Create Canisters
         run: dfx canister create --all
 
+      - name: Wait for Canisters to be Ready
+        run: sleep 20
+
       - name: Deploy deps
         run: dfx deps deploy
         
