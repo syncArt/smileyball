@@ -50,17 +50,14 @@ jobs:
           # Wait until DFX is ready
           until dfx ping; do sleep 1; done
           
-      - name: Create Canisters
-        run: dfx canister create --all
-          
       - name: Pull deps
         run: dfx deps pull
           
       - name: Init deps arguments
         run: dfx deps init
-          
-      - name: Init deps deploy
-        run: dfx deps deploy
+
+      - name: Create Canisters
+        run: dfx canister create --all
         
       - name: Build all canisters including dependencies
         run: dfx build --ic
@@ -91,6 +88,9 @@ jobs:
             echo "Wasm file does not exist in .dfx/ic/canisters/smileyball_frontend/"
             exit 1  # Fail the workflow if the Wasm file does not exist
           fi
+
+      - name: Init deps deploy
+        run: dfx deps deploy
     
       - name: Deploy Smileyball Frontend on ICP
         run: |
