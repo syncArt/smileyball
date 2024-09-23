@@ -58,6 +58,9 @@ jobs:
 
       - name: Create Canisters
         run: dfx canister create --all
+
+      - name: Generate definitions
+        run: dfx generate 
         
       - name: Build all canisters including dependencies
         run: dfx build --ic
