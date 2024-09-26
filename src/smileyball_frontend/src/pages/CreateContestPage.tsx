@@ -4,10 +4,10 @@ import { useState } from "react";
 import { mockSongsApiResponse } from "@/hooks/data-mocks";
 
 export const CreateContestPage = () => {
-
   const { lastContestResults } = useLastContestResults();
 
   const [isVisible, setIsVisible] = useState(false);
+
   const toggleVisibility = () => {
     setIsVisible((isVisible) => (!isVisible));
   }
@@ -28,11 +28,13 @@ export const CreateContestPage = () => {
           </div>
 
 
-          {isVisible && <div className="transition-opacity">
-            <p className="ml-10 ">Some description to a contest for people and for jury to let them know what is the subject of assesment</p>
+          <div className={`transform transition-opacity duration-500 ease-in-out ${isVisible ? "opacity-100" : "opacity-0"} ${isVisible ? "visible" : "invisible"}`}>
+            <p className="ml-10 ">
+              Some description to a contest for people and for jury to let them know what is the subject of assesment
+            </p>
             <button className="ml-10 mt-2 font-bold hover:text-slate-300">DELETE</button>
             <button className="ml-6 mt-2 font-bold hover:text-slate-300">APPROVE</button>
-          </div>}
+          </div>
 
 
           <button className="flex mt-2 font-bold">ADD NEW CONTEST</button>
