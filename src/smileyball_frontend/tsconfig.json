@@ -11,15 +11,22 @@
     "forceConsistentCasingInFileNames": true,
     "module": "ESNext",
     "moduleResolution": "Node",
+    "composite": true,
+    "declaration": true,
+    "outDir": "../../HACK_BECAUSE_OF_ALLOW_JS/smileyball_frontend",
+    "rootDir": ".",
     "resolveJsonModule": true,
     "isolatedModules": true,
-    "noEmit": true,
+    "noEmit": false,
     "jsx": "react-jsx",
+    "typeRoots": ["../../node_modules/@types", "../../node_modules"],
     "types": ["vite/client"],
     "baseUrl": ".",
     "paths": {
-      "@/*": ["./src/*"]
+      "@/*": ["./src/*"],
+      "declarations/*": ["../declarations/*"]
     }
   },
-  "include": ["vite.config.ts", "src/**/*", "tests/**/*"]
+  "include": ["vite.config.ts", "src/**/*", "tests/**/*"],
+  "exclude": ["dist", "node_modules", "../../node_modules"]
 }

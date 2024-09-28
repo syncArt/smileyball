@@ -19,9 +19,34 @@ module.exports = {
       orange: "#FEB241",
       blue: "#00B3FF",
       grey: "#232323",
+      error: "#F82E2E",
       ...marquee.colors,
     },
     extend: {
+      keyframes: {
+        rotate90: {
+          "0%": { transform: "rotate(0deg)" },
+          "100%": { transform: "rotate(90deg)" },
+        },
+        rotateBack: {
+          "0%": { transform: "rotate(90deg)" },
+          "100%": { transform: "rotate(0deg)" },
+        },
+        fullMenuHeight: {
+          "0%": { height: "0", opacity: 0 },
+          "100%": { height: "230px", opacity: 1 },
+        },
+        zeroMenuHeight: {
+          "0%": { height: "230px", opacity: 1 },
+          "100%": { height: "0", opacity: 0 },
+        },
+      },
+      animation: {
+        rotate90: "rotate90 0.3s linear forwards",
+        rotateBack: "rotateBack 0.3s linear forwards",
+        fullMenuHeight: "fullMenuHeight 0.3s linear forwards",
+        zeroMenuHeight: "zeroMenuHeight 0.3s linear forwards",
+      },
       fontFamily: {
         sequel100Black: ['"Sequel100Black"', "sans-serif"],
         spaceMono: ['"SpaceMono"', "monospace"],
@@ -50,6 +75,16 @@ module.exports = {
       borderRadius: {
         medium: "22px",
       },
+    },
+    screens: {
+      tablet: "640px",
+      // => @media (min-width: 640px) { ... }
+
+      laptop: "1024px",
+      // => @media (min-width: 1024px) { ... }
+
+      desktop: "1280px",
+      // => @media (min-width: 1280px) { ... }
     },
   },
   plugins: [

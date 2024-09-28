@@ -9,6 +9,7 @@
 
 # dfx temporary files
 .dfx/
+deps/
 
 # generated files
 **/declarations/
@@ -24,4 +25,6 @@ dist/
 # environment variables
 .env
 
-HACK_BECAUSE_OF_ALLOW_JS
+# ts build
+*.tsbuildinfo
+HACK_BECAUSE_OF_ALLOW_JS/
