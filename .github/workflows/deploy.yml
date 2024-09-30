@@ -46,7 +46,7 @@ jobs:
 
       - name: Start DFX server in the background
         run: |
-          nohup dfx start --background --clean --emulator &
+          nohup dfx start --background --clean &
           # Wait until DFX is ready
           until dfx ping; do sleep 1; done
           
@@ -59,17 +59,17 @@ jobs:
       - name: Create Canisters
         run: dfx canister create --all
 
-      - name: Wait for Canisters to be Ready
-        run: sleep 20
-
       - name: Deploy deps
         run: dfx deps deploy
         
-      - name: Build local [required to generate candid types]
+      - name: Generate definitions for deps [required to build local]
+        run: dfx generate user_identity
+
+      - name: Build local [required to generate all definitions]
         run: dfx build
-        
-      - name: Generate definitions [required to build production]
-        run: dfx generate 
+
+      - name: Generate all definitions
+        run: dfx generate
         
       - name: Build all canisters including dependencies for mainnet
         run: dfx build --ic
