@@ -1,5 +1,4 @@
 use candid::CandidType;
-use candid::Principal;
 use serde::Deserialize;
 use std::error::Error;
 use std::fmt::{Display, Formatter};
@@ -8,11 +7,6 @@ use std::fmt::{Display, Formatter};
 pub struct Song {
     pub spotify_song_id: u32,
     pub song_title: String,
-    // pub author: String,
-    // pub genre: String,
-    // pub duration: String,
-    // pub cover_url: Option<String>,
-    // pub added_by: Principal,
 }
 
 #[derive(Debug, CandidType)]
