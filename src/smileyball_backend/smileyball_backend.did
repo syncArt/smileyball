@@ -2,12 +2,7 @@ type ContestData = record {
   contest_songs : vec record { nat32; ContestSongData };
   contest_title : text;
 };
-type ContestError = variant {
-  DuplicateContest;
-  InvalidData;
-  InvalidUuid;
-  KeyNotFound;
-};
+type ContestError = variant { DuplicateContest; KeyNotFound };
 type ContestSongData = record {
   added_by : principal;
   jury_votes : vec record { principal; Vote };

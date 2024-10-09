@@ -5,45 +5,34 @@ use std::collections::HashMap;
 use std::error::Error;
 use std::fmt::{Display, Formatter};
 
-struct SongResultInContest {
-    position: u32,
-    votest_amount: u32,
-    votes_average: f64,
-    voters: Vec<Principal>,
+#[derive(Clone, Deserialize, CandidType)]
+pub struct ContestSongData {
+    pub added_by: Principal,
+    pub jury_votes: HashMap<Principal, Vote>
 }
 
 #[derive(Clone, Deserialize, CandidType)]
-struct ContestSongData {
-    added_by: Principal,
-    jury_votes: HashMap<Principal, Vote>
-}
-
-#[derive(Clone, Deserialize, CandidType)]
-struct Vote {
-    vote: u8
+pub struct Vote {
+    pub vote: u8
 }
 
 #[derive(Clone, Deserialize, CandidType)]
 pub enum Status {
-    InProgres,
-    STOPPED,
+    InProgress,
+    Stopped,
 }
 
 #[derive(Debug, CandidType)]
 pub enum ContestError {
     DuplicateContest,
-    KeyNotFound,
-    InvalidData,
-    InvalidUuid,
+    KeyNotFound
 }
 
 impl Display for ContestError {
     fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
         match self {
             ContestError::DuplicateContest => write!(f, "Contest with the same ID already exist"),
-            ContestError::KeyNotFound => write!(f, "Couldn't find key"),
-            ContestError::InvalidData => write!(f, "Provided data is invalid"),
-            ContestError::InvalidUuid => write!(f, "Invalid id type"),
+            ContestError::KeyNotFound => write!(f, "Couldn't find key")
         }
     }
 }

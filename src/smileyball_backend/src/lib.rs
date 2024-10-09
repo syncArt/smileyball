@@ -4,6 +4,7 @@ pub mod song;
 use contest_data::{ContestData, ContestError};
 use song::{Song, SongError};
 use std::{cell::RefCell, collections::HashMap};
+use std::collections::hash_map::Entry;
 
 thread_local! {
     static SONGS: RefCell<HashMap<u32, Song>> = RefCell::default();
@@ -83,11 +84,12 @@ fn get_song_by_id(song_id: u32) -> Result<Song, SongError> {
 #[ic_cdk::update]
 fn add_song(new_song: Song) -> Result<(), SongError> {
     SONGS.with_borrow_mut(|songs| {
-        if !songs.contains_key(&new_song.spotify_song_id) {
-            songs.insert(new_song.spotify_song_id, new_song);
-            Ok(())
-        } else {
-            Err(SongError::DuplicateSong)
+        match songs.entry(new_song.spotify_song_id) {
+            Entry::Vacant(entry) => {
+                entry.insert(new_song);
+                Ok(())
+            }
+            Entry::Occupied(_) => Err(SongError::DuplicateSong),
         }
     })
 }
