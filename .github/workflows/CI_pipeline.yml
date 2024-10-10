@@ -60,6 +60,9 @@ jobs:
       run: npm run format
       working-directory: src/smileyball_frontend/
 
+    - name: Output useAuthClient.tsx
+      run: cat src/smileyball_frontend/src/hooks/useAuthClient.tsx
+  
     - name: Run tslint
       run: npm run lint
       working-directory: src/smileyball_frontend/
