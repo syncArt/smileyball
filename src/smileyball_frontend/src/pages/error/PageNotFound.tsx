@@ -3,7 +3,7 @@ import { NavLink } from "react-router-dom";
 
 export const PageNotFound = () => {
   return (
-    <ContentBox isError className="w-full flex-col h-full">
+    <ContentBox isError className="h-full w-full flex-col">
       <div className="flex font-sequel100Black text-[24px] font-95 italic text-grey">
         Error - page not found.
       </div>

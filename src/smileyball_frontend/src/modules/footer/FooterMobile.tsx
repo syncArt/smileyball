@@ -2,29 +2,29 @@ import { Logo } from "@/components";
 
 export const FooterMobile = () => {
   return (
-    <div className="laptop:hidden mb-2 mt-10 flex w-full flex-col items-center justify-center">
+    <div className="mb-2 mt-10 flex w-full flex-col items-center justify-center laptop:hidden">
       <ul className="flex flex-col text-[33px] decoration-0">
-        <li className="font-95 flex w-full font-sequel100Black italic text-white">
+        <li className="flex w-full font-sequel100Black font-95 italic text-white">
           OPENCHAT
         </li>
-        <li className="font-95 flex w-full font-sequel100Black italic text-pink">
+        <li className="flex w-full font-sequel100Black font-95 italic text-pink">
           TELEGRAM
         </li>
-        <li className="font-95 flex w-full font-sequel100Black italic text-primary">
+        <li className="flex w-full font-sequel100Black font-95 italic text-primary">
           TWITTER/X
         </li>
-        <li className="font-95 flex w-full font-sequel100Black italic text-blue">
+        <li className="flex w-full font-sequel100Black font-95 italic text-blue">
           DISCORD
         </li>
       </ul>
       <ul className="my-3 flex w-full flex-col items-center justify-center gap-2 text-[33px]">
-        <li className="font-spaceMono flex text-white">GITHUB</li>
-        <li className="font-spaceMono flex text-white">ABOUT CREATORS</li>
+        <li className="flex font-spaceMono text-white">GITHUB</li>
+        <li className="flex font-spaceMono text-white">ABOUT CREATORS</li>
       </ul>
       <div className="my-3 flex">
         <Logo />
       </div>
-      <span className="font-spaceMono flex text-primary">
+      <span className="flex font-spaceMono text-primary">
         Smileyball, Warsaw, 2024
       </span>
     </div>

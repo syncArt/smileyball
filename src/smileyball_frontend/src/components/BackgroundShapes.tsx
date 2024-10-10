@@ -2,7 +2,7 @@ import BgShapeSVG from "@/assets/images/bg-shape.svg";
 
 export const BackgroundShapes = () => {
   return (
-    <div className="m-auto bg-shape min-w-[2200px] w-full absolute flex justify-center">
+    <div className="bg-shape absolute m-auto flex w-full min-w-[2200px] justify-center">
       <div className="absolute left-0 top-0">
         <BgShapeSVG />
       </div>

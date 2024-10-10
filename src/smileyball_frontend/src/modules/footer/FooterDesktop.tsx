@@ -2,7 +2,7 @@ import { Logo } from "@/components";
 
 export const FooterDesktop = () => {
   return (
-    <div className="laptop:flex ml-24 mt-10 hidden w-full flex-col items-center justify-center">
+    <div className="ml-24 mt-10 hidden w-full flex-col items-center justify-center laptop:flex">
       <div className="space-between flex w-full">
         <ul className="relative flex flex-col justify-end text-[33px] decoration-0">
           <li className="flex w-full font-sequel100Black text-white">
@@ -22,17 +22,17 @@ export const FooterDesktop = () => {
         </ul>
         <div className="flex w-full flex-col">
           <ul className="my-3 flex w-full flex-col items-end justify-center gap-2 text-[24px]">
-            <li className="font-spaceMono flex text-white">
+            <li className="flex font-spaceMono text-white">
               <a href="https://github.com/syncArt/smileyball">GITHUB</a>
             </li>
-            <li className="font-spaceMono flex text-white">
+            <li className="flex font-spaceMono text-white">
               <a href="/the-creators">ABOUT CREATORS</a>
             </li>
           </ul>
           <div className="my-3 flex w-full justify-end">
             <Logo />
           </div>
-          <span className="font-spaceMono flex w-full justify-end text-primary">
+          <span className="flex w-full justify-end font-spaceMono text-primary">
             Smileyball, Warsaw, 2024
           </span>
         </div>

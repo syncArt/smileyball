@@ -18,7 +18,6 @@ export const useLastContestResults = () => {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-
     //request for latest contest results and fetch top1 song details
     fetchMock(mockContestApiResponse).then((contestData) => {
       fetchMock(mockSingleSongApiResponse).then((topSongDetails) => {
@@ -33,5 +32,5 @@ export const useLastContestResults = () => {
     });
   }, []);
 
-  return {lastContestResults, isLoading};
+  return { lastContestResults, isLoading };
 };

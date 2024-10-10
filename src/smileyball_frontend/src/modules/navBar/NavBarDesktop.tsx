@@ -44,7 +44,7 @@ export const NavBarDesktop = () => {
   }, [isAuthenticated]);
 
   return (
-    <nav className="relative mb-2 hidden mt-2 w-full items-center justify-between text-[18px] laptop:flex">
+    <nav className="relative mb-2 mt-2 hidden w-full items-center justify-between text-[18px] laptop:flex">
       <div className="ml-[20px] flex gap-[20px] font-spaceMono font-bold italic">
         {navBarData.map((item) => (
           <NavBarDesktopMenuItem
@@ -58,8 +58,11 @@ export const NavBarDesktop = () => {
         <SmileyballLogoText />
       </div>
       <div className="mr-[20px] flex justify-end font-spaceMono font-bold italic">
-        <div className="mx-2 flex h-full cursor-pointer items-center text-white no-underline flex-nowrap">
-          <a className="flex" href="https://qmg3k-zyaaa-aaaan-qm24a-cai.icp0.io/">
+        <div className="mx-2 flex h-full cursor-pointer flex-nowrap items-center text-white no-underline">
+          <a
+            className="flex"
+            href="https://qmg3k-zyaaa-aaaan-qm24a-cai.icp0.io/"
+          >
             <Pencil />
           </a>
           hey, {nickname || "unknown"}!

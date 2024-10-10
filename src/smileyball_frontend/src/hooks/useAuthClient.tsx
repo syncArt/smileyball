@@ -38,7 +38,7 @@ export const useAuthClient = (options: AuthConfig = defaultOptions) => {
   const [principal, setPrincipal] = useState<Principal | null>(null);
   const [whoamiActor, setWhoamiActor] =
     useState<ActorSubclass<_SERVICE> | null>(null);
-  const [loading, setLoading] = useState(true); // Stan ładowania
+  const [loading, setLoading] = useState<boolean>(true); // Stan ładowania
 
   useEffect(() => {
     AuthClient.create(options.createOptions).then(async (client) => {
