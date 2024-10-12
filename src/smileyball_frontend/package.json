@@ -9,7 +9,7 @@
     "build": "tsc && vite build",
     "format": "prettier --write \"src/**/*.{json,js,jsx,ts,tsx,css,scss}\"",
     "test": "vitest",
-    "lint": "DEBUG=typescript-eslint:*,-typescript-eslint:typescript-estree:tsserver:* eslint 'src/**/*.{js,jsx,ts,tsx}' --config ./eslint.config.js"
+    "lint": "eslint 'src/**/*.{js,jsx,ts,tsx}' --no-cache"
   },
   "dependencies": {
     "@dfinity/agent": "^2.1.1",
