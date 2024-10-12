@@ -25,7 +25,7 @@ type AuthContextType = {
   authClient: AuthClient | null;
   identity: Identity | null;
   principal: Principal | null;
-  whoamiActor: any;
+  whoamiActor: ActorSubclass<_SERVICE> | null;
   loading: boolean;
 };
 

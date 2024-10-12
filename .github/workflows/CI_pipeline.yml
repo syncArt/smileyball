@@ -45,6 +45,14 @@ jobs:
     steps:
     - uses: actions/checkout@v4
 
+    - name: Cache node modules
+      uses: actions/cache@v3
+      with:
+        path: |
+          node_modules
+          src/smileyball_frontend/node_modules
+        key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+
     - name: Install dependencies (root)
       run: npm install
 
