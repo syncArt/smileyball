@@ -3,7 +3,7 @@ import LogoText from "@/assets/images/smileyball.svg";
 
 export const TopBarMobile = () => {
   return (
-    <section className="laptop:hidden m-5 flex justify-start items-center gap-10">
+    <section className="m-5 flex items-center justify-start gap-10 laptop:hidden">
       <Logo />
       <LogoText />
     </section>

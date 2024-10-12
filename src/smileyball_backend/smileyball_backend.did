@@ -1,3 +1,30 @@
+type ContestData = record {
+  contest_songs : vec record { nat32; ContestSongData };
+  contest_title : text;
+};
+type ContestError = variant { DuplicateContest; KeyNotFound };
+type ContestSongData = record {
+  added_by : principal;
+  jury_votes : vec record { principal; Vote };
+};
+type Result = variant { Ok; Err : SongError };
+type Result_1 = variant { Ok : text; Err : ContestError };
+type Result_2 = variant { Ok : ContestData; Err : ContestError };
+type Result_3 = variant { Ok : Song; Err : SongError };
+type Result_4 = variant { Ok; Err : ContestError };
+type Result_5 = variant { Ok; Err : text };
+type Song = record { spotify_song_id : nat32; song_title : text };
+type SongError = variant { SongNotFound; DuplicateSong };
+type Vote = record { vote : nat8 };
 service : {
-    "greet": (text) -> (text) query;
+  add_song : (Song) -> (Result);
+  create_contest : (text, ContestData) -> (Result_1);
+  get_contest_by_id : (text) -> (Result_2) query;
+  get_contests : () -> (vec record { text; ContestData }) query;
+  get_song_by_id : (nat32) -> (Result_3) query;
+  get_songs : () -> (vec record { nat32; Song }) query;
+  remove_contest : (text) -> (Result_4);
+  remove_song : (nat32) -> (Result_5);
+  update_contest : (text, ContestData) -> (Result_4);
+  update_song : (nat32, Song) -> (Result_5);
 }

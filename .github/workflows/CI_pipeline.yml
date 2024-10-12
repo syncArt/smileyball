@@ -56,12 +56,15 @@ jobs:
     - name: Install dependencies (root)
       run: npm install
 
-    - name: Install dependencies (frontend)
-      run: npm install
-      working-directory: src/smileyball_frontend/
-
     - name: Run Prettier
       run: npm run format
+      working-directory: src/smileyball_frontend/
+
+    - name: Check ESLint Version
+      run: npx eslint -v
+  
+    - name: Run tslint
+      run: npm run lint
       working-directory: src/smileyball_frontend/
 
     - name: Run Vitest
