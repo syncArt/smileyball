@@ -20,7 +20,7 @@ import { _SERVICE } from "declarations/user_identity/user_identity.did";
 
 type AuthContextType = {
   isAuthenticated: boolean;
-  login: () => void;
+  login: (func?: () => void) => void;
   logout: () => void;
   authClient: AuthClient | null;
   identity: Identity | null;
@@ -47,12 +47,13 @@ export const useAuthClient = (options: AuthConfig = defaultOptions) => {
     });
   }, []);
 
-  const login = () => {
+  const login = (callback?: () => void) => {
     authClient?.login({
       ...options.loginOptions,
       onSuccess: () => {
         console.log("success", authClient);
         updateClient(authClient);
+        if (callback) callback();
       },
       onError: () => {
         console.log("couldn't authorize", authClient);
