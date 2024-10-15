@@ -10,7 +10,7 @@ export const CreateContestForm = () => {
   });
 
   const createContest = () => {
-    smileyball_backend.create_contest("test", formData);
+    smileyball_backend.create_contest(formData);
   };
 
   const handleUpdate = (e: ChangeEvent<HTMLInputElement>) => {
