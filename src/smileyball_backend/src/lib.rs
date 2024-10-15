@@ -12,8 +12,8 @@ thread_local! {
 }
 
 #[ic_cdk::query]
-fn get_contests() -> HashMap<String, ContestData> {
-    CONTESTS.with_borrow(|contests| contests.clone())
+fn get_contests() -> Result<HashMap<String, ContestData>, ContestError> {
+    Ok(CONTESTS.with_borrow(|contests| contests.clone()))
 }
 
 #[ic_cdk::query]
