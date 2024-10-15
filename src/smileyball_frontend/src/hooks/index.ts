@@ -1,4 +1,4 @@
-import { useLastContestResults } from "./useLastContestResults";
+import { useGetAllContests, useLastContest } from "./contests";
 import { useAuth, AuthProvider, useAuthClient } from "./useAuthClient";
 
-export { useLastContestResults, useAuth, AuthProvider, useAuthClient };
+export { useGetAllContests,useLastContest, useAuth, AuthProvider, useAuthClient };

@@ -20,6 +20,7 @@ module.exports = {
       blue: "#00B3FF",
       grey: "#232323",
       error: "#F82E2E",
+      mattGreen: '#3BEC70',
       ...marquee.colors,
     },
     extend: {

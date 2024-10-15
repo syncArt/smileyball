@@ -1,8 +1,8 @@
 import { TopSong } from "@/modules";
-import { useLastContestResults } from "@/hooks";
+import { useLastContest } from "@/hooks";
 
 export const HeroPage = () => {
-  const { lastContestResults, isLoading } = useLastContestResults();
+  const { lastContestResult, isLoading } = useLastContest();
 
   return (
     <>
@@ -10,10 +10,10 @@ export const HeroPage = () => {
         boxName="best song!"
         ratingTitle="popularity"
         isLoading={isLoading}
-        ratingScore={lastContestResults?.ratingScore}
-        songTitle={lastContestResults?.songTitle}
-        bandTitle={lastContestResults?.bandTitle}
-        listenRedirectLink={`/${lastContestResults?.contestId}`}
+        ratingScore={lastContestResult?.ratingScore}
+        songTitle={lastContestResult?.songTitle}
+        bandTitle={lastContestResult?.bandTitle}
+        listenRedirectLink={`/${lastContestResult?.contestId}`}
       />
     </>
   );

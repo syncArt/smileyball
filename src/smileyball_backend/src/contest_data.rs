@@ -42,7 +42,8 @@ impl Error for ContestError {}
 #[derive(Clone, Deserialize, CandidType)]
 pub struct ContestData {
     pub contest_title: String,
-    pub contest_songs: HashMap<u32, ContestSongData>,
+    pub contest_description: String,
+    pub contest_songs: Option<HashMap<u32, ContestSongData>>, // Optional field
 }
 
 #[derive(Clone, Deserialize, CandidType)]

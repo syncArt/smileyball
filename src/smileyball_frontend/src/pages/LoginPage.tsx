@@ -1,11 +1,18 @@
 import IIButtonSvg from "@/assets/images/II-login-button.svg";
 import { useAuth } from "@/hooks";
+import { useNavigate, useLocation } from "react-router-dom";
 
 export const LoginPage = () => {
   const { login } = useAuth();
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  const from: string = location.state?.from?.pathname || "/";
 
   const handleLoginLogout = () => {
-    login();
+    login(() => {
+      navigate(from, { replace: true });
+    });
   };
 
   return (
