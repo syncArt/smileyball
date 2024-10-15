@@ -3,11 +3,10 @@ mod utils;
 
 pub mod song;
 
-use contest_data::{ContestData, ContestError};
-use song::{Song, SongError};
-use std::collections::hash_map::Entry;
-use std::{cell::RefCell, collections::HashMap};
 use crate::utils::generate_random_id;
+use contest_data::{ContestData, ContestError};
+use song::Song;
+use std::{cell::RefCell, collections::HashMap};
 
 thread_local! {
     static SONGS: RefCell<HashMap<u32, Song>> = RefCell::default();
@@ -32,9 +31,11 @@ fn get_contest_by_id(contest_id: u64) -> Result<ContestData, ContestError> {
 
 #[ic_cdk::update]
 async fn create_contest(new_contest: ContestData) -> Result<u64, ContestError> {
-
     let contest_id = generate_random_id().await.map_err(|msg| {
-        ic_cdk::println!("Failed to create contest due to random ID generation error: {}", msg);
+        ic_cdk::println!(
+            "Failed to create contest due to random ID generation error: {}",
+            msg
+        );
         ContestError::KeyNotFound
     })?;
 

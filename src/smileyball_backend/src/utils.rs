@@ -3,7 +3,8 @@ use ic_cdk::api::call::RejectionCode;
 use std::convert::TryInto;
 
 pub async fn generate_random_id() -> Result<u64, String> {
-    let result: Result<(Vec<u8>,), (RejectionCode, String)> = call(candid::Principal::management_canister(), "raw_rand", ()).await;
+    let result: Result<(Vec<u8>,), (RejectionCode, String)> =
+        call(candid::Principal::management_canister(), "raw_rand", ()).await;
 
     let random_id = match result {
         Ok((id,)) => id,
@@ -18,7 +19,11 @@ pub async fn generate_random_id() -> Result<u64, String> {
         return Err("Not enough bytes to generate contest ID".to_string());
     }
 
-    let random_id = u64::from_le_bytes(random_id[0..8].try_into().expect("slice with incorrect length"));
+    let random_id = u64::from_le_bytes(
+        random_id[0..8]
+            .try_into()
+            .expect("slice with incorrect length"),
+    );
 
     Ok(random_id)
 }
