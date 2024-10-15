@@ -65,6 +65,9 @@ jobs:
       - name: Generate definitions for deps [required to build local]
         run: dfx generate user_identity
 
+      - name: Generate definitions for backend
+        run: dfx generate smileyball_backend
+
       - name: Build local [required to generate all definitions]
         run: dfx build
 
