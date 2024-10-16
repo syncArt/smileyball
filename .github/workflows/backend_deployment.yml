@@ -79,7 +79,7 @@ jobs:
 
       - name: Verify Backend Wasm File Exists
         run: |
-          if [ -f ".dfx/ic/canisters/smileyball_backend/smileyball_backend.wasm.gz" ]; then
+          if [ -f ".dfx/ic/canisters/smileyball_backend/smileyball_backend.wasm" ]; then
             echo "Backend Wasm file exists:"
             ls -la .dfx/ic/canisters/smileyball_backend/
           else
