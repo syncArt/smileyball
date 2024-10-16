@@ -52,7 +52,7 @@ jobs:
         run: dfx canister create smileyball_backend
 
       - name: Build all backend canisters
-        run: dfx build --ic
+        run: dfx build smileyball_backend --ic
 
       - name: Generate Candid Types
         run: candid-extractor target/wasm32-unknown-unknown/release/smileyball_backend.wasm > src/smileyball_backend/smileyball_backend.did
