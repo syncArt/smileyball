@@ -26,6 +26,9 @@ jobs:
           rustc --version
           cargo --version
 
+      - name: Install Candid Extractor
+        run: cargo install candid-extractor
+
       - name: Install wasm32-unknown-unknown target for Rust
         run: rustup target add wasm32-unknown-unknown
 
