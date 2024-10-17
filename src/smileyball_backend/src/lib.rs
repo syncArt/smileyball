@@ -1,11 +1,11 @@
+use std::{cell::RefCell, collections::HashMap};
+
 mod contest;
+mod song;
 mod utils;
 
 use contest::model::ContestData;
-use std::{cell::RefCell, collections::HashMap};
-
-pub mod song;
-use song::Song;
+use song::model::Song;
 
 thread_local! {
     static SONGS: RefCell<HashMap<u32, Song>> = RefCell::default();
