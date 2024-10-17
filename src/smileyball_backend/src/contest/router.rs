@@ -26,5 +26,3 @@ pub fn remove_contest(contest_id: u64) -> Result<(), ContestError> {
 pub fn update_contest(contest_id: u64, updated_contest: ContestData) -> Result<(), ContestError> {
     service::update_contest(contest_id, updated_contest)
 }
-
-ic_cdk::export_candid!();
