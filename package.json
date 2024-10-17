@@ -12,7 +12,8 @@
     "lint": "npm run lint --workspaces --if-present",
     "prettier": "npm run prettier --workspaces --if-present",
     "test": "npm test --workspaces --if-present",
-    "postinstall": "npx lefthook install"
+    "postinstall": "npx lefthook install",
+    "gencandid": "candid-extractor target/wasm32-unknown-unknown/release/smileyball_backend.wasm > src/smileyball_backend/smileyball_backend.did"
   },
   "workspaces": [
     "src/smileyball_frontend"
