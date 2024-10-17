@@ -21,14 +21,14 @@ export const CreateContestForm = () => {
     <div>
       <input
         name="contest_title"
-        className="bg-mattGreen mt-4 w-80 rounded-lg border border-black p-1 text-black placeholder-black"
+        className="mt-4 w-80 rounded-lg border border-black bg-mattGreen p-1 text-black placeholder-black"
         placeholder="CONTEST_TITLE:_"
         onChange={handleUpdate}
         value={formData.contest_title}
       />
       <input
         name="contest_description"
-        className="bg-mattGreen placeholder: mt-4 flex h-40 w-80 rounded-lg border border-black px-1 text-start text-black placeholder-black"
+        className="placeholder: mt-4 flex h-40 w-80 rounded-lg border border-black bg-mattGreen px-1 text-start text-black placeholder-black"
         placeholder="CONTEST_DESCRIPTION:_"
         onChange={handleUpdate}
         value={formData.contest_description}

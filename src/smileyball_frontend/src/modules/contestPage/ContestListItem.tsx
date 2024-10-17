@@ -18,12 +18,12 @@ export const ContestListItem = ({
     setIsVisible((isVisible) => !isVisible);
   };
 
-  let parsedId = id.toString()
+  let parsedId = id.toString();
   return (
     <div className="flex w-full flex-col">
       <div onClick={toggleVisibility} className="cursor-pointer">
         <p className="ml-6 inline-block font-bold">
-          Contest #{parsedId.split('', 5)}
+          Contest #{parsedId.split("", 5)}
         </p>
         <p className="ml-1 inline-block font-bold">
           {contestResults?.contest_title ? contestResults.contest_title : ""}
