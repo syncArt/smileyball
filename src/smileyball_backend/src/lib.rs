@@ -9,7 +9,6 @@ use song::model::Song;
 
 thread_local! {
     static SONGS: RefCell<HashMap<u32, Song>> = RefCell::default();
-
     static CONTESTS: RefCell<HashMap<u64, ContestData>> = RefCell::default();
 }
 

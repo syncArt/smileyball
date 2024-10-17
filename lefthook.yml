@@ -4,21 +4,21 @@ pre-commit:
     # Backend (Rust)
     cargo_fmt:
       run: "cargo fmt --all"
-      glob: "backend/**/*.rs"
-      root: "backend"
+      glob: "src/smileyball_backend/**/*.rs"
+      root: "src/smileyball_backend"
 
     cargo_clippy:
       run: "cargo clippy --all-targets --all-features -- -D warnings"
-      glob: "backend/**/*.rs"
-      root: "backend"
+      glob: "src/smileyball_backend/**/*.rs"
+      root: "src/smileyball_backend"
 
     # Frontend (JavaScript/TypeScript)
     lint_frontend:
       run: "npm run lint"
-      glob: "frontend/**/*.{js,ts,tsx}"
-      root: "frontend"
+      glob: "src/smileyball_frontend/**/*.{js,ts,tsx}"
+      root: "src/smileyball_frontend"
 
     prettier_frontend:
       run: "npm run prettier --write"
-      glob: "frontend/**/*.{js,ts,tsx,css,scss,html}"
-      root: "frontend"
+      glob: "src/smileyball_frontend/**/*.{js,ts,tsx,css,scss,html}"
+      root: "src/smileyball_frontend"
