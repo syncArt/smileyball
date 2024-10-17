@@ -28,7 +28,7 @@ export const useLastContest = () => {
           bandTitle: topSongDetails.band_name,
           ratingScore: contestData.total_votes,
           contestId: contestData.contest_id,
-          contestDesc: contestData.contest_description
+          contestDesc: contestData.contest_description,
         });
         setIsLoading(false);
       });

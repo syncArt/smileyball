@@ -43,7 +43,7 @@ impl Error for ContestError {}
 pub struct ContestData {
     pub contest_title: String,
     pub contest_description: String,
-    pub contest_songs: Option<HashMap<u32, ContestSongData>>, // Optional field
+    pub contest_songs: Option<HashMap<u32, ContestSongData>>,
 }
 
 #[derive(Clone, Deserialize, CandidType)]

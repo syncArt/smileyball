@@ -5,8 +5,7 @@ import { ContestData } from "declarations/smileyball_backend/smileyball_backend.
 export type ContestRecord = Record<number, ContestData>;
 
 export const useGetAllContests = () => {
-  const [contests, setContests] =
-    useState<ContestRecord[] | null>(null);
+  const [contests, setContests] = useState<ContestRecord[] | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
   const getContests = async () => {
@@ -14,7 +13,7 @@ export const useGetAllContests = () => {
     await smileyball_backend.get_contests().then((res) => {
       if ("Ok" in res) {
         const data = res.Ok;
-        const parsedData = data.map(el => ({[el[0].toString()]: el[1]}))
+        const parsedData = data.map((el) => ({ [el[0].toString()]: el[1] }));
         setContests(parsedData);
       } else {
         console.error("Error:", res.Err);
@@ -27,7 +26,7 @@ export const useGetAllContests = () => {
     setIsLoading(true);
     smileyball_backend.remove_contest(BigInt(id)).then(() => {
       getContests();
-    })
+    });
   };
 
   useEffect(() => {

@@ -9,9 +9,17 @@
     "prebuild": "npm run prebuild --workspaces --if-present",
     "pretest": "npm run prebuild --workspaces --if-present",
     "start": "npm start --workspaces --if-present",
-    "test": "npm test --workspaces --if-present"
+    "lint": "npm run lint --workspaces --if-present",
+    "prettier": "npm run prettier --workspaces --if-present",
+    "test": "npm test --workspaces --if-present",
+    "postinstall": "npx lefthook install"
   },
   "workspaces": [
     "src/smileyball_frontend"
-  ]
+  ],
+  "devDependencies": {
+    "@commitlint/cli": "^19.5.0",
+    "@commitlint/config-conventional": "^19.5.0",
+    "lefthook": "^1.7.18"
+  }
 }
