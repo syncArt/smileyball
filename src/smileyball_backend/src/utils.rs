@@ -1,3 +1,6 @@
+use crate::contest::model::error::ContestError;
+use crate::management::model::ContestStage;
+use crate::with_management;
 use ic_cdk::api::call::call;
 use ic_cdk::api::call::RejectionCode;
 use std::convert::TryInto;
@@ -26,4 +29,32 @@ pub async fn generate_random_id() -> Result<u64, String> {
     );
 
     Ok(random_id)
+}
+
+pub fn validate_stage(
+    contest_id: u64,
+    valid_stages: Vec<ContestStage>,
+) -> Result<(), ContestError> {
+    with_management(|management| {
+        let management = management.borrow();
+
+        for stage in valid_stages {
+            let stage_list = match stage {
+                ContestStage::Waiting => &management.contest_stages.waiting,
+                ContestStage::Lobby => &management.contest_stages.lobby,
+                ContestStage::Jury => &management.contest_stages.jury,
+                ContestStage::Live => &management.contest_stages.live,
+                ContestStage::Finished => &management.contest_stages.finished,
+                ContestStage::Paid => &management.contest_stages.paid,
+                ContestStage::Canceled => &management.contest_stages.canceled,
+                ContestStage::Archived => &management.contest_stages.archived,
+            };
+
+            if stage_list.contains(&contest_id) {
+                return Ok(());
+            }
+        }
+
+        Err(ContestError::InvalidStageTransition)
+    })
 }
