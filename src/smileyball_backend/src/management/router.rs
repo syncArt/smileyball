@@ -37,7 +37,7 @@ impl FromStr for UserRole {
     }
 }
 
-#[ic_cdk::update]
+#[ic_cdk::update(name = "management_update_update_contest_stage")]
 pub fn update_contest_stage(stage: String, contest_id: u64) -> Result<(), String> {
     let caller = api::caller();
     let stage_enum = stage
@@ -46,7 +46,7 @@ pub fn update_contest_stage(stage: String, contest_id: u64) -> Result<(), String
     change_contest_stage(stage_enum, contest_id, caller)
 }
 
-#[ic_cdk::update]
+#[ic_cdk::update(name = "management_update_add_role")]
 pub fn add_role(role: String, principal: Principal) -> Result<(), String> {
     let caller = api::caller();
     let role_enum = role
@@ -55,7 +55,7 @@ pub fn add_role(role: String, principal: Principal) -> Result<(), String> {
     assign_role(role_enum, principal, caller)
 }
 
-#[ic_cdk::update]
+#[ic_cdk::update(name = "management_update_remove_role_api")]
 pub fn remove_role_api(role: String, principal: Principal) -> Result<(), String> {
     let caller = api::caller();
     let role_enum = role
@@ -64,7 +64,7 @@ pub fn remove_role_api(role: String, principal: Principal) -> Result<(), String>
     remove_role(role_enum, principal, caller)
 }
 
-#[ic_cdk::update]
+#[ic_cdk::update(name = "management_update_add_restricted_method_api")]
 pub fn add_restricted_method_api(method_name: String, roles: Vec<String>) -> Result<(), String> {
     let caller = api::caller();
     let roles_enum: Result<Vec<UserRole>, String> = roles
@@ -77,7 +77,7 @@ pub fn add_restricted_method_api(method_name: String, roles: Vec<String>) -> Res
     add_restricted_method(method_name, roles_enum?, caller)
 }
 
-#[ic_cdk::query]
+#[ic_cdk::query(name = "management_get_check_user_permission")]
 pub fn check_user_permission(method_name: String) -> bool {
     let caller = api::caller();
     check_permission(&method_name, caller)

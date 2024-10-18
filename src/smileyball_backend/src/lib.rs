@@ -7,7 +7,7 @@ mod management;
 mod song;
 mod utils;
 
-use contest::model::ContestData;
+use contest::model::{ContestData, CreateContest, Status, Vote};
 use management::model::ManagementData;
 use song::model::Song;
 
