@@ -2,7 +2,7 @@ use candid::CandidType;
 use candid::Principal;
 use serde::Deserialize;
 
-#[derive(Debug, Clone, Copy)]
+#[derive(Debug, Deserialize, CandidType, Clone, Copy)]
 pub enum ContestStage {
     Waiting,
     Lobby,
@@ -14,7 +14,7 @@ pub enum ContestStage {
     Archived,
 }
 
-#[derive(Debug, Clone, Copy)]
+#[derive(Debug, Deserialize, CandidType, Clone, Copy)]
 pub enum UserRole {
     SuperAdmin,
     Admin,

@@ -1,11 +1,11 @@
 type ContestData = record {
   status : opt Status;
   contest_description : text;
-  contest_songs : opt vec record { nat32; LobbySongData };
+  contest_songs : opt vec record { nat32; ContestSongData };
   contest_results : opt vec ContestResultData;
   jury : opt vec principal;
   added_by : principal;
-  optional_stages : vec record { OptionalStageType; bool };
+  optional_stages : OptionalStages;
   price_pool_init : nat64;
   created_at : nat64;
   lobby_songs : opt vec record { nat32; LobbySongData };
@@ -16,7 +16,12 @@ type ContestData = record {
 type ContestError = variant {
   UpdateError : UpdateError;
   DuplicateContest;
+  MissingSongs;
+  ContestStopped;
+  MissingSongsInLobby;
   KeyNotFound;
+  InvalidStageTransition;
+  UnauthorizedAccess;
 };
 type ContestResultData = record {
   closed_by : opt principal;
@@ -26,15 +31,30 @@ type ContestResultData = record {
   position : nat32;
   finished_at : opt text;
 };
+type ContestSongData = record {
+  added_by : principal;
+  contest_votes : vec record { principal; Vote };
+};
+type ContestStage = variant {
+  Lobby;
+  Jury;
+  Live;
+  Paid;
+  Finished;
+  Waiting;
+  Archived;
+  Canceled;
+};
 type CreateContest = record {
   contest_description : text;
+  optional_stages : OptionalStages;
   contest_title : text;
 };
 type LobbySongData = record {
+  lobby_votes : vec record { principal; Vote };
   added_by : principal;
-  jury_votes : vec record { principal; Vote };
 };
-type OptionalStageType = variant { Lobby; Jury };
+type OptionalStages = record { jury : bool; lobby : bool };
 type Result = variant {
   Ok : vec record { nat64; ContestData };
   Err : ContestError;
@@ -42,8 +62,8 @@ type Result = variant {
 type Result_1 = variant { Ok : ContestData; Err : ContestError };
 type Result_2 = variant { Ok; Err : ContestError };
 type Result_3 = variant { Ok : nat64; Err : ContestError };
-type Result_4 = variant { Ok; Err : text };
-type Status = variant { Stopped; InProgress; Canceled };
+type Result_4 = variant { Ok : ContestStage; Err : ContestError };
+type Status = variant { Stopped; InProgress };
 type UpdateError = record { message : text };
 type Vote = record { vote : nat8 };
 service : {
@@ -53,12 +73,8 @@ service : {
   contest_update_add_public_vote : (nat64, nat32, Vote) -> (Result_2);
   contest_update_add_song_to_lobby : (nat64, nat32) -> (Result_2);
   contest_update_create_contest : (CreateContest) -> (Result_3);
-  contest_update_finalize_contest : (nat64) -> (Result_2);
   contest_update_remove_contest : (nat64) -> (Result_2);
-  contest_update_update_stage : (nat64, Status) -> (Result_2);
-  management_get_check_user_permission : (text) -> (bool) query;
-  management_update_add_restricted_method_api : (text, vec text) -> (Result_4);
-  management_update_add_role : (text, principal) -> (Result_4);
-  management_update_remove_role_api : (text, principal) -> (Result_4);
-  management_update_update_contest_stage : (text, nat64) -> (Result_4);
+  contest_update_update_status : (nat64, Status) -> (Result_2);
+  management_get_current_stage : (nat64) -> (Result_4) query;
+  management_update_process_next : (nat64) -> (Result_2);
 }

@@ -1,10 +1,5 @@
-use crate::management::model::{ContestStage, ManagementData, Operation, UserRole};
+use crate::management::model::ContestStage;
 use crate::with_management;
-use candid::Principal;
-
-pub fn get_management_data() -> ManagementData {
-    with_management(|management| management.borrow().clone())
-}
 
 pub fn update_contest_stage(stage: ContestStage, contest_id: u64) {
     with_management(|management| {
@@ -22,31 +17,58 @@ pub fn update_contest_stage(stage: ContestStage, contest_id: u64) {
     });
 }
 
-pub fn add_operation(operation: Operation) {
+pub fn is_contest_in_stage(stage: ContestStage, contest_id: u64) -> bool {
     with_management(|management| {
-        let mut management = management.borrow_mut();
-        management.operations.push(operation);
-    });
-}
-
-pub fn assign_role(role: UserRole, principal: Principal) {
-    with_management(|management| {
-        let mut management = management.borrow_mut();
-        match role {
-            UserRole::SuperAdmin => management.roles.super_admin.push(principal),
-            UserRole::Admin => management.roles.admin.push(principal),
-            UserRole::Jury => management.roles.jury.push(principal),
+        let management = management.borrow();
+        match stage {
+            ContestStage::Waiting => management.contest_stages.waiting.contains(&contest_id),
+            ContestStage::Lobby => management.contest_stages.lobby.contains(&contest_id),
+            ContestStage::Jury => management.contest_stages.jury.contains(&contest_id),
+            ContestStage::Live => management.contest_stages.live.contains(&contest_id),
+            ContestStage::Finished => management.contest_stages.finished.contains(&contest_id),
+            ContestStage::Paid => management.contest_stages.paid.contains(&contest_id),
+            ContestStage::Canceled => management.contest_stages.canceled.contains(&contest_id),
+            ContestStage::Archived => management.contest_stages.archived.contains(&contest_id),
         }
-    });
+    })
 }
 
-pub fn remove_role(role: UserRole, principal: Principal) {
+pub fn remove_contest_from_stage(stage: ContestStage, contest_id: u64) {
     with_management(|management| {
         let mut management = management.borrow_mut();
-        match role {
-            UserRole::SuperAdmin => management.roles.super_admin.retain(|p| p != &principal),
-            UserRole::Admin => management.roles.admin.retain(|p| p != &principal),
-            UserRole::Jury => management.roles.jury.retain(|p| p != &principal),
+        match stage {
+            ContestStage::Waiting => management
+                .contest_stages
+                .waiting
+                .retain(|&id| id != contest_id),
+            ContestStage::Lobby => management
+                .contest_stages
+                .lobby
+                .retain(|&id| id != contest_id),
+            ContestStage::Jury => management
+                .contest_stages
+                .jury
+                .retain(|&id| id != contest_id),
+            ContestStage::Live => management
+                .contest_stages
+                .live
+                .retain(|&id| id != contest_id),
+            ContestStage::Finished => management
+                .contest_stages
+                .finished
+                .retain(|&id| id != contest_id),
+            ContestStage::Paid => management
+                .contest_stages
+                .paid
+                .retain(|&id| id != contest_id),
+            ContestStage::Canceled => management
+                .contest_stages
+                .canceled
+                .retain(|&id| id != contest_id),
+            ContestStage::Archived => management
+                .contest_stages
+                .archived
+                .retain(|&id| id != contest_id),
         }
     });
 }

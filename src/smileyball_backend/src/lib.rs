@@ -1,5 +1,9 @@
-use crate::contest::model::ContestError;
-use candid::Principal;
+use crate::contest::model::contest::CreateContest;
+use crate::contest::model::error::ContestError;
+use crate::contest::model::stage::Status;
+use crate::contest::model::vote::Vote;
+use crate::management::model::ContestStage;
+
 use std::{cell::RefCell, collections::HashMap};
 
 mod contest;
@@ -7,7 +11,7 @@ mod management;
 mod song;
 mod utils;
 
-use contest::model::{ContestData, CreateContest, Status, Vote};
+use crate::contest::model::contest::ContestData;
 use management::model::ManagementData;
 use song::model::Song;
 
