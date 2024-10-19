@@ -70,8 +70,9 @@ service : {
   contest_get_get_contest : () -> (Result) query;
   contest_get_get_contest_by_id : (nat64) -> (Result_1) query;
   contest_update_add_jury_vote : (nat64, nat32, Vote) -> (Result_2);
+  contest_update_add_multiple_songs_to_lobby : (nat64, vec nat32) -> (Result_2);
   contest_update_add_public_vote : (nat64, nat32, Vote) -> (Result_2);
-  contest_update_add_song_to_lobby : (nat64, nat32) -> (Result_2);
+  contest_update_add_single_song_to_lobby : (nat64, nat32) -> (Result_2);
   contest_update_create_contest : (CreateContest) -> (Result_3);
   contest_update_remove_contest : (nat64) -> (Result_2);
   contest_update_update_status : (nat64, Status) -> (Result_2);

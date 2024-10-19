@@ -30,11 +30,20 @@ pub fn update_contest_status(contest_id: u64, new_status: Status) -> Result<(), 
     service::update_contest_status(contest_id, new_status)
 }
 
-#[ic_cdk::update(name = "contest_update_add_song_to_lobby")]
-pub fn add_song_to_lobby(contest_id: u64, song_id: u32) -> Result<(), ContestError> {
+#[ic_cdk::update(name = "contest_update_add_single_song_to_lobby")]
+pub fn add_single_song_to_lobby(contest_id: u64, song_id: u32) -> Result<(), ContestError> {
     let added_by = ic_cdk::api::caller();
     let song_data = LobbySongData::new(added_by);
-    service::add_song_to_lobby(contest_id, song_id, song_data)
+    service::add_single_song_to_lobby(contest_id, song_id, song_data)
+}
+
+#[ic_cdk::update(name = "contest_update_add_multiple_songs_to_lobby")]
+pub fn add_multiple_songs_to_lobby(
+    contest_id: u64,
+    song_ids: Vec<u32>,
+) -> Result<(), ContestError> {
+    let added_by = ic_cdk::api::caller();
+    service::add_multiple_songs_to_lobby(contest_id, song_ids, added_by)
 }
 
 #[ic_cdk::update(name = "contest_update_add_jury_vote")]
