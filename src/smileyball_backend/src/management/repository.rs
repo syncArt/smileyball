@@ -1,4 +1,4 @@
-use crate::management::model::ContestStage;
+use crate::management::model::{ContestStage, ManagementData};
 use crate::with_management;
 
 pub fn update_contest_stage(stage: ContestStage, contest_id: u64) {
@@ -71,4 +71,7 @@ pub fn remove_contest_from_stage(stage: ContestStage, contest_id: u64) {
                 .retain(|&id| id != contest_id),
         }
     });
+}
+pub fn get_management_data() -> Option<ManagementData> {
+    with_management(|management| Some(management.borrow().clone()))
 }

@@ -3,8 +3,10 @@ type ContestData = record {
   contest_description : text;
   contest_songs : opt vec record { nat32; ContestSongData };
   contest_results : opt vec ContestResultData;
+  max_songs_amount : opt nat32;
   jury : opt vec principal;
   added_by : principal;
+  min_songs_amount : opt nat32;
   optional_stages : OptionalStages;
   price_pool_init : nat64;
   created_at : nat64;
@@ -15,10 +17,13 @@ type ContestData = record {
 };
 type ContestError = variant {
   UpdateError : UpdateError;
+  InvalidSongAmountRange;
   DuplicateContest;
   MissingSongs;
+  NotEnoughSongsInLobby;
   ContestStopped;
   MissingSongsInLobby;
+  TooManySongsInLobby;
   KeyNotFound;
   InvalidStageTransition;
   UnauthorizedAccess;
@@ -45,11 +50,24 @@ type ContestStage = variant {
   Archived;
   Canceled;
 };
+type ContestStages = record {
+  canceled : vec nat64;
+  jury : vec nat64;
+  live : vec nat64;
+  paid : vec nat64;
+  lobby : vec nat64;
+  finished : vec nat64;
+  waiting : vec nat64;
+  archived : vec nat64;
+};
 type CreateContest = record {
   contest_description : text;
-  optional_stages : OptionalStages;
+  max_songs_amount : opt nat32;
+  min_songs_amount : opt nat32;
+  optional_stages : opt OptionalStages;
   contest_title : text;
 };
+type GetContestStagesResponse = record { contest_stages : ContestStages };
 type LobbySongData = record {
   lobby_votes : vec record { principal; Vote };
   added_by : principal;
@@ -62,7 +80,8 @@ type Result = variant {
 type Result_1 = variant { Ok : ContestData; Err : ContestError };
 type Result_2 = variant { Ok; Err : ContestError };
 type Result_3 = variant { Ok : nat64; Err : ContestError };
-type Result_4 = variant { Ok : ContestStage; Err : ContestError };
+type Result_4 = variant { Ok : GetContestStagesResponse; Err : ContestError };
+type Result_5 = variant { Ok : ContestStage; Err : ContestError };
 type Status = variant { Stopped; InProgress };
 type UpdateError = record { message : text };
 type Vote = record { vote : nat8 };
@@ -76,6 +95,7 @@ service : {
   contest_update_create_contest : (CreateContest) -> (Result_3);
   contest_update_remove_contest : (nat64) -> (Result_2);
   contest_update_update_status : (nat64, Status) -> (Result_2);
-  management_get_current_stage : (nat64) -> (Result_4) query;
+  management_get_all_contest_stages : () -> (Result_4) query;
+  management_get_current_stage : (nat64) -> (Result_5) query;
   management_update_process_next : (nat64) -> (Result_2);
 }

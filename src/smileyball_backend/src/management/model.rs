@@ -66,3 +66,8 @@ pub struct Roles {
     pub admin: Vec<Principal>,
     pub jury: Vec<Principal>,
 }
+
+#[derive(Clone, Deserialize, CandidType, Debug, Default)]
+pub struct GetContestStagesResponse {
+    pub contest_stages: ContestStages,
+}

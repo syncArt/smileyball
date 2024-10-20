@@ -1,5 +1,5 @@
 use crate::contest::model::error::ContestError;
-use crate::management::model::{ContestStage, UserRole};
+use crate::management::model::{ContestStage, GetContestStagesResponse, UserRole};
 use crate::management::service;
 use std::str::FromStr;
 
@@ -42,4 +42,12 @@ pub fn process_next(contest_id: u64) -> Result<(), ContestError> {
 #[ic_cdk::query(name = "management_get_current_stage")]
 pub fn get_current_stage(contest_id: u64) -> Result<ContestStage, ContestError> {
     service::get_current_stage(contest_id)
+}
+
+#[ic_cdk::query(name = "management_get_all_contest_stages")]
+pub fn get_all_contest_stages() -> Result<GetContestStagesResponse, ContestError> {
+    match service::get_all_contest_stages() {
+        Ok(contest_stages) => Ok(GetContestStagesResponse { contest_stages }),
+        Err(_) => Err(ContestError::KeyNotFound),
+    }
 }

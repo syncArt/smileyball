@@ -13,6 +13,9 @@ pub enum ContestError {
     ContestStopped,
     UnauthorizedAccess,
     MissingSongsInLobby,
+    NotEnoughSongsInLobby,
+    TooManySongsInLobby,
+    InvalidSongAmountRange,
 }
 
 #[derive(Clone, Deserialize, CandidType, Debug)]
@@ -44,6 +47,21 @@ impl Display for ContestError {
             ContestError::ContestStopped => write!(f, "The contest is currently stopped"),
             ContestError::MissingSongsInLobby => {
                 write!(f, "Lobby songs cannot be empty if lobby stage is skipped")
+            }
+            ContestError::NotEnoughSongsInLobby => {
+                write!(f, "You didnt reach minimum songs in lobby amount")
+            }
+            ContestError::TooManySongsInLobby => {
+                write!(
+                    f,
+                    "You exceed max amount of songs in lobby, please remove some"
+                )
+            }
+            ContestError::InvalidSongAmountRange => {
+                write!(
+                    f,
+                    "Max songs amount should be at least 1 more that min songs amount"
+                )
             }
         }
     }

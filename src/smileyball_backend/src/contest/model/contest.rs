@@ -18,6 +18,8 @@ pub struct ContestData {
     pub lobby_songs: Option<HashMap<u32, LobbySongData>>,
     pub contest_songs: Option<HashMap<u32, ContestSongData>>,
     pub contest_results: Option<Vec<ContestResultData>>,
+    pub min_songs_amount: Option<u32>,
+    pub max_songs_amount: Option<u32>,
     pub added_by: Principal,
     pub created_at: u64,
 }
@@ -26,5 +28,7 @@ pub struct ContestData {
 pub struct CreateContest {
     pub contest_title: String,
     pub contest_description: String,
-    pub optional_stages: OptionalStages,
+    pub optional_stages: Option<OptionalStages>,
+    pub min_songs_amount: Option<u32>,
+    pub max_songs_amount: Option<u32>,
 }

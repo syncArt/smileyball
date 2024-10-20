@@ -3,6 +3,7 @@ use crate::contest::model::error::ContestError;
 use crate::contest::model::stage::Status;
 use crate::contest::model::vote::Vote;
 use crate::management::model::ContestStage;
+use crate::management::model::GetContestStagesResponse;
 
 use std::{cell::RefCell, collections::HashMap};
 

@@ -23,6 +23,12 @@ pub async fn create_contest(new_contest: CreateContest) -> Result<u64, ContestEr
         return Err(ContestError::DuplicateContest);
     }
 
+    if let (Some(min), Some(max)) = (new_contest.min_songs_amount, new_contest.max_songs_amount) {
+        if min >= max {
+            return Err(ContestError::InvalidSongAmountRange);
+        }
+    }
+
     let contest_data = ContestData::new_initial(new_contest);
 
     repository::create_contest(contest_id, contest_data)?;

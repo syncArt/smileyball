@@ -2,7 +2,8 @@ use crate::contest::model::error::{ContestError, UpdateError};
 use crate::contest::model::stage::Status;
 use crate::contest::repository::update_contest;
 use crate::contest::service::get_contest_by_id;
-use crate::management::model::ContestStage;
+use crate::management::model::{ContestStage, ContestStages};
+use crate::management::repository;
 use crate::management::repository::{
     is_contest_in_stage, remove_contest_from_stage, update_contest_stage,
 };
@@ -13,7 +14,6 @@ pub fn process_next(contest_id: u64) -> Result<(), ContestError> {
         return Err(ContestError::ContestStopped);
     }
 
-    // Używamy funkcji z repository do sprawdzania etapu konkursu
     let current_stage = if is_contest_in_stage(ContestStage::Waiting, contest_id) {
         ContestStage::Waiting
     } else if is_contest_in_stage(ContestStage::Lobby, contest_id) {
@@ -30,14 +30,14 @@ pub fn process_next(contest_id: u64) -> Result<(), ContestError> {
 
     match current_stage {
         ContestStage::Waiting => {
-            remove_contest_from_stage(ContestStage::Waiting, contest_id);
-
             if !contest.optional_stages.lobby
                 && (contest.lobby_songs.is_none()
                     || contest.lobby_songs.as_ref().unwrap().is_empty())
             {
                 return Err(ContestError::MissingSongsInLobby);
             }
+
+            remove_contest_from_stage(ContestStage::Waiting, contest_id);
 
             if contest.optional_stages.lobby {
                 update_contest_stage(ContestStage::Lobby, contest_id);
@@ -52,6 +52,22 @@ pub fn process_next(contest_id: u64) -> Result<(), ContestError> {
             }
         }
         ContestStage::Lobby => {
+            let songs_count = contest
+                .lobby_songs
+                .as_ref()
+                .map_or(0, |songs| songs.len() as u32);
+
+            if let Some(min) = contest.min_songs_amount {
+                if songs_count < min {
+                    return Err(ContestError::NotEnoughSongsInLobby);
+                }
+            }
+            if let Some(max) = contest.max_songs_amount {
+                if songs_count > max {
+                    return Err(ContestError::TooManySongsInLobby);
+                }
+            }
+
             remove_contest_from_stage(ContestStage::Lobby, contest_id);
 
             if contest.optional_stages.jury {
@@ -65,11 +81,11 @@ pub fn process_next(contest_id: u64) -> Result<(), ContestError> {
             }
         }
         ContestStage::Jury => {
-            remove_contest_from_stage(ContestStage::Jury, contest_id);
-
             contest
                 .move_songs_to_contest()
                 .map_err(|e| ContestError::UpdateError(UpdateError::new(e)))?;
+
+            remove_contest_from_stage(ContestStage::Jury, contest_id);
             update_contest_stage(ContestStage::Live, contest_id);
             update_contest(contest_id, contest)?;
         }
@@ -82,6 +98,7 @@ pub fn process_next(contest_id: u64) -> Result<(), ContestError> {
             contest
                 .finalize_contest()
                 .map_err(|e| ContestError::UpdateError(UpdateError::new(e)))?;
+
             remove_contest_from_stage(ContestStage::Finished, contest_id);
             update_contest_stage(ContestStage::Paid, contest_id);
             update_contest(contest_id, contest)?;
@@ -111,5 +128,13 @@ pub fn get_current_stage(contest_id: u64) -> Result<ContestStage, ContestError> 
         Ok(ContestStage::Archived)
     } else {
         Err(ContestError::KeyNotFound)
+    }
+}
+
+pub fn get_all_contest_stages() -> Result<ContestStages, String> {
+    if let Some(management_data) = repository::get_management_data() {
+        Ok(management_data.contest_stages)
+    } else {
+        Err("Management data is not initialized.".to_string())
     }
 }
