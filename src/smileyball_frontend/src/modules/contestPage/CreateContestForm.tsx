@@ -1,39 +1,113 @@
-import { smileyball_backend } from "declarations/smileyball_backend";
-import { ContestData } from "declarations/smileyball_backend/smileyball_backend.did";
-import { ChangeEvent, useState } from "react";
+import { Input, Textarea, Label, Checkbox } from "@/components/form";
+import { useCreateContest } from "@/hooks/contests";
+import SongListModule from "@/modules/contestPage/AddSongs";
+import { useSpotifyLink, useSpotifyTrackList } from "@/hooks";
 
 export const CreateContestForm = () => {
-  const [formData, setFormData] = useState<ContestData>({
-    contest_songs: [],
-    contest_description: "",
-    contest_title: "",
-  });
+  const { handleUpdate, createContest, formData, error } = useCreateContest();
+  const {
+    spotifyLink,
+    error: linkErr,
+    handleInputChange,
+    extractSpotifyId,
+    resetInput,
+  } = useSpotifyLink();
 
-  const createContest = () => {
-    smileyball_backend.create_contest(formData);
-  };
+  const {
+    trackList,
+    addTrack,
+    removeTrack,
+    loading,
+    error: trackErr,
+  } = useSpotifyTrackList();
 
-  const handleUpdate = (e: ChangeEvent<HTMLInputElement>) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+  const handleAddSong = async () => {
+    const id = extractSpotifyId();
+    if (id) {
+      await addTrack(id);
+      resetInput();
+    }
   };
 
   return (
-    <div>
-      <input
-        name="contest_title"
-        className="mt-4 w-80 rounded-lg border border-black bg-mattGreen p-1 text-black placeholder-black"
-        placeholder="CONTEST_TITLE:_"
-        onChange={handleUpdate}
-        value={formData.contest_title}
-      />
-      <input
-        name="contest_description"
-        className="placeholder: mt-4 flex h-40 w-80 rounded-lg border border-black bg-mattGreen px-1 text-start text-black placeholder-black"
-        placeholder="CONTEST_DESCRIPTION:_"
-        onChange={handleUpdate}
-        value={formData.contest_description}
-      />
+    <div className="flex flex-col">
+      <Label id="contest_title" text="Title">
+        <Input
+          onChange={handleUpdate}
+          id="contest_title"
+          value={formData.contest_title}
+          placeholder=""
+          name="contest_title"
+        />
+      </Label>
+      <Label id="contest_description" text="Description">
+        <Textarea
+          name="contest_description"
+          id="contest_description"
+          cols={2}
+          rows={4}
+          onChange={handleUpdate}
+          value={formData.contest_description}
+          placeholder=""
+        />
+      </Label>
 
+      {formData.optional_stages[0]?.lobby ? (
+        <div className="flex">
+          <Label id="min_songs_amount" text="Min songs">
+            <Input
+              name="min_songs_amount"
+              id="min_songs_amount"
+              type="number"
+              onChange={handleUpdate}
+              value={formData.min_songs_amount[0]?.toString()}
+              placeholder="0"
+            />
+          </Label>
+          <Label id="max_songs_amount" text="Max songs">
+            <Input
+              name="max_songs_amount"
+              id="max_songs_amount"
+              type="number"
+              onChange={handleUpdate}
+              value={formData.max_songs_amount[0]?.toString()}
+              placeholder="0"
+            />
+          </Label>
+        </div>
+      ) : (
+        <div className="flex">
+          <SongListModule
+            trackList={trackList}
+            removeTrack={removeTrack}
+            handleInputChange={handleInputChange}
+            spotifyLink={spotifyLink}
+            handleAddSong={handleAddSong}
+            loading={loading}
+            linkErr={linkErr}
+            trackErr={trackErr}
+          />
+        </div>
+      )}
+
+      {error && <p className="mt-2 text-red-500">{error}</p>}
+
+      <div className="mt-4 flex flex-col">
+        <Checkbox
+          name="jury"
+          id="with_jury"
+          onChange={handleUpdate}
+          checked={formData.optional_stages[0]?.jury}
+          label="With Jury"
+        />
+        <Checkbox
+          name="lobby"
+          id="with_lobby"
+          onChange={handleUpdate}
+          checked={formData.optional_stages[0]?.lobby}
+          label="With public lobby"
+        />
+      </div>
       <button
         className="mt-2 flex font-sequel100Black text-[20px] font-55 uppercase hover:text-slate-300"
         onClick={createContest}
