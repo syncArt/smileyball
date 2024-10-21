@@ -89,7 +89,7 @@ jobs:
 
       - name: Deploy Smileyball Backend on ICP
         run: |
-          dfx canister install smileyball_backend --network ic --mode upgrade
+          dfx canister install smileyball_backend --network ic --mode upgrade --yes
 
       - name: Stop DFX server and clean up processes
         run: |
