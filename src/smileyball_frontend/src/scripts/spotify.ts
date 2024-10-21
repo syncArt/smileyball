@@ -15,7 +15,9 @@ export async function redirectToAuthCodeFlow(clientId: string) {
   params.append("response_type", "code");
   params.append(
     "redirect_uri",
-    `http://${process.env.CANISTER_ID_SMILEYBALL_FRONTEND}.localhost:4943/callback`,
+    process.env.DFX_NETWORK !== "ic"
+      ? `http://${process.env.CANISTER_ID_SMILEYBALL_FRONTEND}.localhost:4943/callback`
+      : `http://${process.env.CANISTER_ID_SMILEYBALL_FRONTEND}.icp0.io/callback`,
   );
   params.append(
     "scope",
@@ -59,7 +61,9 @@ export async function getAccessToken(
   params.append("code", code);
   params.append(
     "redirect_uri",
-    `http://${process.env.CANISTER_ID_SMILEYBALL_FRONTEND}.localhost:4943/callback`,
+    process.env.DFX_NETWORK !== "ic"
+      ? `http://${process.env.CANISTER_ID_SMILEYBALL_FRONTEND}.localhost:4943/callback`
+      : `http://${process.env.CANISTER_ID_SMILEYBALL_FRONTEND}.icp0.io/callback`,
   );
   params.append("code_verifier", verifier!);
 
