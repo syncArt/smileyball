@@ -11,7 +11,7 @@ export const useSpotifyAuth = () => {
 
   useEffect(() => {
     const messageListener = (event: MessageEvent) => {
-      if (event.origin !== "http://localhost:3000") return;
+      if (event.origin !== process.env.CANISTER_ID_SMILEYBALL_FRONTEND) return;
 
       const { token, refreshToken, profile } = event.data;
 

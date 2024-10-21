@@ -13,7 +13,8 @@
         "src/smileyball_frontend/dist"
       ],
       "type": "assets",
-      "workspace": "smileyball_frontend"
+      "workspace": "smileyball_frontend",
+      "local": "be2us-64aaa-aaaaa-qaabq-cai"
     },
     "user_identity": {
       "type": "pull",

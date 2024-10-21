@@ -16,7 +16,7 @@ const SpotifyAuthCallback = () => {
 
       window.opener.postMessage(
         { token: accessToken, refreshToken, profile },
-        "http://localhost:3000/create-contest/new",
+        `http://${process.env.CANISTER_ID_SMILEYBALL_FRONTEND}.localhost:4943/create-contest/new`,
       );
 
       setTimeout(() => {
