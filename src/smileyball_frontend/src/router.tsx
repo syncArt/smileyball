@@ -7,6 +7,7 @@ import { PageNotFound } from "@/pages/error";
 import ProtectedRoute from "@/modules/ProtectedRoute";
 import { CreateContestForm } from "@/modules/contestPage/CreateContestForm";
 import { ContestsList } from "@/modules/contestPage/ContestsList";
+import SpotifyAuthCallback from "@/pages/SpotifyAuthCallback";
 
 export const router = createBrowserRouter([
   {
@@ -47,5 +48,9 @@ export const router = createBrowserRouter([
         element: <PageNotFound />,
       },
     ],
+  },
+  {
+    path: "/callback",
+    element: <SpotifyAuthCallback />,
   },
 ]);

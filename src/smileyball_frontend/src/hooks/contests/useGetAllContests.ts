@@ -10,7 +10,7 @@ export const useGetAllContests = () => {
 
   const getContests = async () => {
     setIsLoading(true);
-    await smileyball_backend.get_contests().then((res) => {
+    await smileyball_backend.contest_get_get_contest().then((res) => {
       if ("Ok" in res) {
         const data = res.Ok;
         const parsedData = data.map((el) => ({ [el[0].toString()]: el[1] }));
@@ -24,7 +24,7 @@ export const useGetAllContests = () => {
 
   const deleteContest = (id: string) => {
     setIsLoading(true);
-    smileyball_backend.remove_contest(BigInt(id)).then(() => {
+    smileyball_backend.contest_update_remove_contest(BigInt(id)).then(() => {
       getContests();
     });
   };

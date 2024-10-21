@@ -1,4 +1,5 @@
-use crate::contest::model::{ContestData, ContestError};
+use crate::contest::model::contest::ContestData;
+use crate::contest::model::error::ContestError;
 use std::collections::HashMap;
 
 pub fn get_contests() -> Result<HashMap<u64, ContestData>, ContestError> {

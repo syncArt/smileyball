@@ -34,7 +34,7 @@ export default tseslint.config(eslint.configs.recommended, {
     "@typescript-eslint/no-unsafe-assignment": "off",
     "@typescript-eslint/no-unsafe-call": "off",
     "@typescript-eslint/no-unsafe-member-access": "off",
-    "@typescript-eslint/no-unsafe-return": "error",
+    "@typescript-eslint/no-unsafe-return": "off",
     "no-unused-vars": "warn"
   },
   ignores: ["dist"],

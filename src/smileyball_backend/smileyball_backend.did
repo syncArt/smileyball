@@ -1,25 +1,101 @@
 type ContestData = record {
+  status : opt Status;
   contest_description : text;
   contest_songs : opt vec record { nat32; ContestSongData };
+  contest_results : opt vec ContestResultData;
+  max_songs_amount : opt nat32;
+  jury : opt vec principal;
+  added_by : principal;
+  min_songs_amount : opt nat32;
+  optional_stages : OptionalStages;
+  price_pool_init : nat64;
+  created_at : nat64;
+  lobby_songs : opt vec record { nat32; LobbySongData };
+  total_votes : opt nat32;
   contest_title : text;
+  songs_in_lobby_amount : opt nat32;
 };
-type ContestError = variant { DuplicateContest; KeyNotFound };
+type ContestError = variant {
+  UpdateError : UpdateError;
+  InvalidSongAmountRange;
+  DuplicateContest;
+  MissingSongs;
+  NotEnoughSongsInLobby;
+  ContestStopped;
+  MissingSongsInLobby;
+  TooManySongsInLobby;
+  KeyNotFound;
+  InvalidStageTransition;
+  UnauthorizedAccess;
+};
+type ContestResultData = record {
+  closed_by : opt principal;
+  votes_average : float32;
+  top_voters : vec Vote;
+  votes_amount : nat32;
+  position : nat32;
+  finished_at : opt text;
+};
 type ContestSongData = record {
   added_by : principal;
-  jury_votes : vec record { principal; Vote };
+  contest_votes : vec record { principal; Vote };
 };
-type Result = variant { Ok : nat64; Err : ContestError };
-type Result_1 = variant { Ok : ContestData; Err : ContestError };
-type Result_2 = variant {
+type ContestStage = variant {
+  Lobby;
+  Jury;
+  Live;
+  Paid;
+  Finished;
+  Waiting;
+  Archived;
+  Canceled;
+};
+type ContestStages = record {
+  canceled : vec nat64;
+  jury : vec nat64;
+  live : vec nat64;
+  paid : vec nat64;
+  lobby : vec nat64;
+  finished : vec nat64;
+  waiting : vec nat64;
+  archived : vec nat64;
+};
+type CreateContest = record {
+  contest_description : text;
+  max_songs_amount : opt nat32;
+  min_songs_amount : opt nat32;
+  optional_stages : opt OptionalStages;
+  contest_title : text;
+};
+type GetContestStagesResponse = record { contest_stages : ContestStages };
+type LobbySongData = record {
+  lobby_votes : vec record { principal; Vote };
+  added_by : principal;
+};
+type OptionalStages = record { jury : bool; lobby : bool };
+type Result = variant {
   Ok : vec record { nat64; ContestData };
   Err : ContestError;
 };
-type Result_3 = variant { Ok; Err : ContestError };
+type Result_1 = variant { Ok : ContestData; Err : ContestError };
+type Result_2 = variant { Ok; Err : ContestError };
+type Result_3 = variant { Ok : nat64; Err : ContestError };
+type Result_4 = variant { Ok : GetContestStagesResponse; Err : ContestError };
+type Result_5 = variant { Ok : ContestStage; Err : ContestError };
+type Status = variant { Stopped; InProgress };
+type UpdateError = record { message : text };
 type Vote = record { vote : nat8 };
 service : {
-  create_contest : (ContestData) -> (Result);
-  get_contest_by_id : (nat64) -> (Result_1) query;
-  get_contests : () -> (Result_2) query;
-  remove_contest : (nat64) -> (Result_3);
-  update_contest : (nat64, ContestData) -> (Result_3);
+  contest_get_get_contest : () -> (Result) query;
+  contest_get_get_contest_by_id : (nat64) -> (Result_1) query;
+  contest_update_add_jury_vote : (nat64, nat32, Vote) -> (Result_2);
+  contest_update_add_multiple_songs_to_lobby : (nat64, vec nat32) -> (Result_2);
+  contest_update_add_public_vote : (nat64, nat32, Vote) -> (Result_2);
+  contest_update_add_single_song_to_lobby : (nat64, nat32) -> (Result_2);
+  contest_update_create_contest : (CreateContest) -> (Result_3);
+  contest_update_remove_contest : (nat64) -> (Result_2);
+  contest_update_update_status : (nat64, Status) -> (Result_2);
+  management_get_all_contest_stages : () -> (Result_4) query;
+  management_get_current_stage : (nat64) -> (Result_5) query;
+  management_update_process_next : (nat64) -> (Result_2);
 }
