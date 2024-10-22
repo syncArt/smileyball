@@ -4,15 +4,10 @@ import { fetchProfile, getAccessToken } from "@/scripts/spotify";
 const SpotifyAuthCallback = () => {
   const handleAuthCallback = async (clientId: string, code: string) => {
     try {
-      console.log("Starting token exchange with code:", code);
-
       const { access_token: accessToken, refresh_token: refreshToken } =
         await getAccessToken(clientId, code);
-      console.log("Access token:", accessToken);
 
       const profile = await fetchProfile(accessToken);
-
-      console.log("Sending message to parent window");
 
       window.opener.postMessage(
         { token: accessToken, refreshToken, profile },
@@ -29,12 +24,31 @@ const SpotifyAuthCallback = () => {
     }
   };
 
+  const handleMessage = (event: MessageEvent) => {
+    const validOrigin =
+      process.env.DFX_NETWORK !== "ic"
+        ? `http://${process.env.CANISTER_ID_SMILEYBALL_FRONTEND}.localhost:4943`
+        : `https://${process.env.CANISTER_ID_SMILEYBALL_FRONTEND}.icp0.io`;
+
+    if (event.origin !== validOrigin) return;
+
+    const { verifier } = event.data;
+    if (verifier) {
+      localStorage.setItem("verifier", verifier);
+    }
+  };
+
+  useEffect(() => {
+    window.addEventListener("message", handleMessage);
+
+    return () => {
+      window.removeEventListener("message", handleMessage);
+    };
+  }, []);
+
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
     const code = params.get("code");
-
-    console.log("URL params:", params);
-    console.log("Code from URL:", code);
 
     if (code) {
       handleAuthCallback("bfcd922bba8541179e45752fe328af7c", code);

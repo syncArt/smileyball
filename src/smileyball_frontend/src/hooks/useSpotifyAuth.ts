@@ -69,18 +69,7 @@ export const useSpotifyAuth = () => {
   }, []);
 
   const handleLogin = async () => {
-    const authUrl = await redirectToAuthCodeFlow(
-      "bfcd922bba8541179e45752fe328af7c",
-    );
-    const authWindow = window.open(
-      authUrl,
-      "SpotifyAuth",
-      "width=500,height=800",
-    );
-
-    if (authWindow) {
-      authWindow.focus();
-    }
+    await redirectToAuthCodeFlow("bfcd922bba8541179e45752fe328af7c");
   };
 
   const logoutFromSpotify = () => {
