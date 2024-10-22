@@ -10,7 +10,6 @@
 # dfx temporary files
 .dfx/
 deps/
-!**/.ic-assets.json5
 
 # generated files
 **/declarations/
