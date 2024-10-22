@@ -26,7 +26,23 @@ export async function redirectToAuthCodeFlow(clientId: string) {
   params.append("code_challenge_method", "S256");
   params.append("code_challenge", challenge);
 
-  return `https://accounts.spotify.com/authorize?${params.toString()}`;
+  const authWindow = window.open(
+    `https://accounts.spotify.com/authorize?${params.toString()}`,
+    "_blank",
+    "width=500,height=800",
+  );
+
+  if (authWindow) {
+    authWindow.onload = () => {
+      authWindow.postMessage(
+        { verifier },
+        process.env.DFX_NETWORK !== "ic"
+          ? `http://${process.env.CANISTER_ID_SMILEYBALL_FRONTEND}.localhost:4943`
+          : `http://${process.env.CANISTER_ID_SMILEYBALL_FRONTEND}.icp0.io`,
+      );
+    };
+    authWindow.focus();
+  }
 }
 
 function generateCodeVerifier(length: number) {
@@ -54,6 +70,12 @@ export async function getAccessToken(
   code: string,
 ): Promise<{ refresh_token: string; access_token: string }> {
   const verifier = localStorage.getItem("verifier");
+
+  if (!verifier) {
+    throw new Error(
+      "Code verifier not found in localStorage. Please restart the authentication process.",
+    );
+  }
 
   const params = new URLSearchParams();
   params.append("client_id", clientId);
