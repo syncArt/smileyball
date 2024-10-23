@@ -1,6 +1,6 @@
-import { ContentBox } from "@/components";
-import { PageMenu } from "@/components/PageMenu";
+import { PageMenu } from "@/lib/components/PageMenu";
 import { Outlet } from "react-router-dom";
+import { ContentBox } from "@/lib/layout/ContentBox";
 
 export const CreateContestPage = () => {
   return (

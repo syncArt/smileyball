@@ -1,5 +1,5 @@
-import { TopSong } from "@/modules";
-import { useLastContest } from "@/hooks";
+import { useLastContest } from "@/features/contests/hooks";
+import { TopSong } from "@/features/home/components/TopSong";
 
 export const HeroPage = () => {
   const { lastContestResult, isLoading } = useLastContest();

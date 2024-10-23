@@ -1,8 +1,8 @@
 import { useEffect } from "react";
-import { getAccessToken } from "@/scripts/spotify";
-import { getHostUrl } from "@/scripts/utils";
+import { getAccessToken } from "@/lib/scripts/spotify";
+import { getHostUrl } from "@/lib/scripts/utils";
 
-const SpotifyAuthCallback = () => {
+export const SpotifyAuthCallback = () => {
   const handleAuthCallback = async (clientId: string, code: string) => {
     try {
       const { access_token, refresh_token } = await getAccessToken(
@@ -37,5 +37,3 @@ const SpotifyAuthCallback = () => {
 
   return <div>spotify auth</div>;
 };
-
-export default SpotifyAuthCallback;

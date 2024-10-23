@@ -1,9 +1,9 @@
 import { createRoot } from "react-dom/client";
 import { RouterProvider } from "react-router-dom";
-import { StrictModeWrapper } from "@/components";
-import { AuthProvider } from "@/hooks";
-import { router } from "./router";
-import "./styles/index.scss";
+import { StrictModeWrapper } from "@/lib/components";
+import { AuthProvider } from "@/lib/hooks";
+import { router } from "@/lib/routing";
+import "@/lib/styles/index.scss";
 
 createRoot(document.getElementById("root")!).render(
   <StrictModeWrapper>
