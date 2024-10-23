@@ -11,5 +11,5 @@ export function getHostUrl(path: string = ""): string {
     return `http://${process.env.CANISTER_ID_SMILEYBALL_FRONTEND}.localhost:4943${path}`;
   }
   console.log("prod");
-  return `http://${process.env.CANISTER_ID_SMILEYBALL_FRONTEND}.icp0.io${path}`;
+  return `https://${process.env.CANISTER_ID_SMILEYBALL_FRONTEND}.icp0.io${path}`;
 }
