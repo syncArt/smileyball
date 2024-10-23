@@ -1,3 +1,5 @@
+import { getHostUrl } from "@/scripts/utils";
+
 export async function redirectToAuthCodeFlow(clientId: string) {
   const verifier = generateCodeVerifier(128);
   const challenge = await generateCodeChallenge(verifier);
@@ -13,12 +15,7 @@ export async function redirectToAuthCodeFlow(clientId: string) {
   const params = new URLSearchParams();
   params.append("client_id", clientId);
   params.append("response_type", "code");
-  params.append(
-    "redirect_uri",
-    process.env.DFX_NETWORK !== "ic"
-      ? `http://${process.env.CANISTER_ID_SMILEYBALL_FRONTEND}.localhost:4943/callback`
-      : `http://${process.env.CANISTER_ID_SMILEYBALL_FRONTEND}.icp0.io/callback`,
-  );
+  params.append("redirect_uri", getHostUrl("/callback"));
   params.append(
     "scope",
     "user-read-private user-read-email user-library-read user-read-playback-state user-read-recently-played",
@@ -33,14 +30,6 @@ export async function redirectToAuthCodeFlow(clientId: string) {
   );
 
   if (authWindow) {
-    authWindow.onload = () => {
-      authWindow.postMessage(
-        { verifier },
-        process.env.DFX_NETWORK !== "ic"
-          ? `http://${process.env.CANISTER_ID_SMILEYBALL_FRONTEND}.localhost:4943`
-          : `http://${process.env.CANISTER_ID_SMILEYBALL_FRONTEND}.icp0.io`,
-      );
-    };
     authWindow.focus();
   }
 }
@@ -81,12 +70,7 @@ export async function getAccessToken(
   params.append("client_id", clientId);
   params.append("grant_type", "authorization_code");
   params.append("code", code);
-  params.append(
-    "redirect_uri",
-    process.env.DFX_NETWORK !== "ic"
-      ? `http://${process.env.CANISTER_ID_SMILEYBALL_FRONTEND}.localhost:4943/callback`
-      : `http://${process.env.CANISTER_ID_SMILEYBALL_FRONTEND}.icp0.io/callback`,
-  );
+  params.append("redirect_uri", getHostUrl("/callback"));
   params.append("code_verifier", verifier!);
 
   const result = await fetch("https://accounts.spotify.com/api/token", {
@@ -97,10 +81,14 @@ export async function getAccessToken(
 
   const data = await result.json();
 
-  const { access_token, refresh_token } = data;
+  const { access_token, refresh_token, expires_in } = data;
 
   localStorage.setItem("access_token", access_token);
   localStorage.setItem("refresh_token", refresh_token);
+  localStorage.setItem(
+    "expires_at",
+    (Date.now() + expires_in * 1000).toString(),
+  );
 
   return { access_token, refresh_token };
 }
@@ -111,27 +99,11 @@ export async function fetchProfile(token: string): Promise<any> {
     headers: { Authorization: `Bearer ${token}` },
   });
 
-  if (result.status === 401) {
-    console.log("Token expired, refreshing token...");
-    const newToken = await refreshToken(
-      token,
-      "bfcd922bba8541179e45752fe328af7c",
-    );
-
-    result = await fetch("https://api.spotify.com/v1/me", {
-      method: "GET",
-      headers: { Authorization: `Bearer ${newToken}` },
-    });
-  }
-
   if (!result.ok) {
     throw new Error("Failed to fetch profile: " + result.status);
   }
 
   const data = await result.json();
-  console.log("Response status:", result.status);
-  console.log("Response data:", data);
-
   return data;
 }
 
@@ -152,15 +124,18 @@ export async function refreshToken(
 
   const data = await result.json();
 
-  console.log("Refresh token response:", data); // Zaloguj pełną odpowiedź
-
   if (!result.ok) {
     throw new Error("Failed to refresh token: " + result.status);
   }
 
   const newAccessToken: string = data.access_token;
 
+  const expiresIn = data.expires_in || 3600;
   localStorage.setItem("access_token", newAccessToken);
+  localStorage.setItem(
+    "expires_at",
+    (Date.now() + expiresIn * 1000).toString(),
+  );
 
   return newAccessToken;
 }

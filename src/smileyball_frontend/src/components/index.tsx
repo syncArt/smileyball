@@ -5,6 +5,7 @@ import { ProgressBar } from "./ProgressBar";
 import { MarqueeBar } from "./MarqueeBar";
 import { SpotifySong } from "./SpotifySong";
 import { SpotifyAuth } from "./SpotifyAuth";
+import { StrictModeWrapper } from "./StrictModeWrapper";
 
 export {
   BackgroundShapes,
@@ -14,4 +15,5 @@ export {
   MarqueeBar,
   SpotifySong,
   SpotifyAuth,
+  StrictModeWrapper,
 };

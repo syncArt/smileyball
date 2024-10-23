@@ -1,71 +1,22 @@
-import { useState, useEffect } from "react";
-import {
-  fetchProfile,
-  refreshToken,
-  redirectToAuthCodeFlow,
-} from "@/scripts/spotify";
+import { useEffect } from "react";
+import { refreshToken, redirectToAuthCodeFlow } from "@/scripts/spotify";
+import { usePostMessageListener } from "@/hooks/useSpotifyPostMessage";
 
 export const useSpotifyAuth = () => {
-  const [accessToken, setAccessToken] = useState<string | null>(null);
-  const [profile, setProfile] = useState<any>(null);
+  const data = usePostMessageListener();
 
-  useEffect(() => {
-    const messageListener = (event: MessageEvent) => {
-      if (event.origin !== process.env.CANISTER_ID_SMILEYBALL_FRONTEND) return;
+  const { access_token, refresh_token } = data;
 
-      const { token, refreshToken, profile } = event.data;
+  const refreshTokenIfStale = async () => {
+    const expiresAt = parseInt(localStorage.getItem("expires_at") || "0", 10);
 
-      if (token && profile) {
-        console.log(
-          "Message received: setting profile and token from postMessage",
-        );
-        setAccessToken(token);
-        setProfile(profile);
-        localStorage.setItem("access_token", token);
-        localStorage.setItem("refresh_token", refreshToken);
-      }
-    };
-
-    window.addEventListener("message", messageListener);
-
-    return () => {
-      window.removeEventListener("message", messageListener);
-    };
-  }, []);
-
-  useEffect(() => {
-    const token = localStorage.getItem("access_token");
-    const refresh = localStorage.getItem("refresh_token");
-
-    if (token) {
-      console.log("Using token from localStorage:", token);
-      setAccessToken(token);
-
-      fetchProfile(token)
-        .then((profileData) => {
-          console.log(
-            "Setting profile from token in localStorage:",
-            profileData,
-          );
-          setProfile(profileData);
-        })
-        .catch(async (error) => {
-          if (error.message === "Invalid access token" && refresh) {
-            console.log("Access token invalid, refreshing token...");
-            const newToken = await refreshToken(
-              refresh,
-              "bfcd922bba8541179e45752fe328af7c",
-            );
-            localStorage.setItem("access_token", newToken);
-            setAccessToken(newToken);
-
-            const newProfile = await fetchProfile(newToken);
-            setProfile(newProfile);
-          } else {
-            console.error("Error fetching profile or refreshing token:", error);
-          }
-        });
+    if (Date.now() > expiresAt - 5 * 60 * 1000) {
+      await refreshToken(refresh_token!, "bfcd922bba8541179e45752fe328af7c");
     }
+  };
+
+  useEffect(() => {
+    refreshTokenIfStale();
   }, []);
 
   const handleLogin = async () => {
@@ -75,14 +26,12 @@ export const useSpotifyAuth = () => {
   const logoutFromSpotify = () => {
     localStorage.removeItem("access_token");
     localStorage.removeItem("refresh_token");
-    setAccessToken(null);
-    setProfile(null);
   };
 
   return {
-    accessToken,
-    profile,
+    access_token,
     handleLogin,
     logoutFromSpotify,
+    refreshTokenIfStale,
   };
 };
