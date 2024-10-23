@@ -1,5 +1,5 @@
-import { ContentBox } from "@/components";
 import { NavLink } from "react-router-dom";
+import { ContentBox } from "@/lib/layout/ContentBox";
 
 export const ErrorFallbackPage = ({
   error,

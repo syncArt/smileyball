@@ -4,7 +4,7 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "setup": "node ./src/scripts/modify_ic_assets.js",
+    "setup": "node src/lib/scripts/modify_ic_assets.js",
     "deploy": "npm run build && npm run setup && dfx canister install smileyball_frontend --mode upgrade",
     "start": "DFX_VITE_LOCAL=true vite --port 3000",
     "build": "tsc && vite build",

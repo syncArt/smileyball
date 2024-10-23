@@ -1,5 +1,5 @@
 const colors = require("tailwindcss/colors");
-const { marquee } = require("./src/styles/static");
+const { marquee } = require("./src/lib/styles/static");
 
 /** @type {import('tailwindcss').Config} */
 module.exports = {
