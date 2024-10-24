@@ -1,8 +1,7 @@
 import React, { ChangeEvent } from "react";
-import { useSpotifyAuth } from "@/lib/hooks";
 import { Track } from "@/lib/hooks/useSpotifyTrackList";
 import { useSpotifyProfile } from "@/lib/hooks/useSpotifyProfile";
-import { SpotifyAuth } from "./SpotifyAuth";
+import { SpotifyLogin } from "./SpotifyLogin";
 import { SpotifySong } from "./SpotifySong";
 
 type SongListModuleProps = {
@@ -26,21 +25,12 @@ const SongListModule = ({
   linkErr,
   trackErr,
 }: SongListModuleProps) => {
-  const { handleLogin, logoutFromSpotify } = useSpotifyAuth();
-  const { profile, handleClearProfile } = useSpotifyProfile();
+  const { spotifyProfile } = useSpotifyProfile();
 
-  const handleLogout = () => {
-    handleClearProfile();
-    logoutFromSpotify();
-  };
   return (
     <div className="flex w-full flex-col">
-      <SpotifyAuth
-        handleLogin={handleLogin}
-        logoutFromSpotify={handleLogout}
-        profile={profile}
-      />
-      {profile && (
+      <SpotifyLogin />
+      {spotifyProfile && (
         <SpotifySong
           trackList={trackList}
           removeTrack={removeTrack}
