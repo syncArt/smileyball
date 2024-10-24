@@ -1,4 +1,9 @@
 import { getHostUrl } from "@/lib/scripts/utils";
+import {
+  objectToURLSearchParams,
+  SpotifyPOSTClient,
+} from "@/lib/api/spotifyConfig";
+import { useSpotifyCookies } from "@/lib/hooks/useSpotifyCookies";
 
 export async function redirectToAuthCodeFlow(clientId: string) {
   const verifier = generateCodeVerifier(128);
@@ -12,16 +17,15 @@ export async function redirectToAuthCodeFlow(clientId: string) {
 
   localStorage.setItem("verifier", verifier);
 
-  const params = new URLSearchParams();
-  params.append("client_id", clientId);
-  params.append("response_type", "code");
-  params.append("redirect_uri", getHostUrl("/callback"));
-  params.append(
-    "scope",
-    "user-read-private user-read-email user-library-read user-read-playback-state user-read-recently-played",
-  );
-  params.append("code_challenge_method", "S256");
-  params.append("code_challenge", challenge);
+  const params = objectToURLSearchParams({
+    client_id: clientId,
+    response_type: "code",
+    redirect_uri: getHostUrl("/callback"),
+    scope:
+      "user-read-private user-top-read user-read-email user-library-read user-read-playback-state user-read-recently-played",
+    code_challenge_method: "S256",
+    code_challenge: challenge,
+  });
 
   const authWindow = window.open(
     `https://accounts.spotify.com/authorize?${params.toString()}`,
@@ -54,10 +58,16 @@ async function generateCodeChallenge(codeVerifier: string) {
     .replace(/=+$/, "");
 }
 
+export type SpotifyAccessToken = {
+  refresh_token: string;
+  access_token: string;
+  expires_in: number;
+};
+
 export async function getAccessToken(
   clientId: string,
   code: string,
-): Promise<{ refresh_token: string; access_token: string }> {
+): Promise<SpotifyAccessToken> {
   const verifier = localStorage.getItem("verifier");
 
   if (!verifier) {
@@ -66,94 +76,34 @@ export async function getAccessToken(
     );
   }
 
-  const params = new URLSearchParams();
-  params.append("client_id", clientId);
-  params.append("grant_type", "authorization_code");
-  params.append("code", code);
-  params.append("redirect_uri", getHostUrl("/callback"));
-  params.append("code_verifier", verifier!);
-
-  const result = await fetch("https://accounts.spotify.com/api/token", {
-    method: "POST",
-    headers: { "Content-Type": "application/x-www-form-urlencoded" },
-    body: params,
+  const searchParams = objectToURLSearchParams({
+    client_id: clientId,
+    grant_type: "authorization_code",
+    code: code,
+    redirect_uri: getHostUrl("/callback"),
+    code_verifier: verifier,
   });
 
-  const data = await result.json();
+  const result = await SpotifyPOSTClient("/api/token", searchParams);
 
-  const { access_token, refresh_token, expires_in } = data;
-
-  localStorage.setItem("access_token", access_token);
-  localStorage.setItem("refresh_token", refresh_token);
-  localStorage.setItem(
-    "expires_at",
-    (Date.now() + expires_in * 1000).toString(),
-  );
-
-  return { access_token, refresh_token };
+  return result;
 }
 
-export async function fetchProfile(token: string): Promise<any> {
-  let result = await fetch("https://api.spotify.com/v1/me", {
-    method: "GET",
-    headers: { Authorization: `Bearer ${token}` },
-  });
-
-  if (!result.ok) {
-    throw new Error("Failed to fetch profile: " + result.status);
-  }
-
-  const data = await result.json();
-  return data;
-}
-
-export async function refreshToken(
+export const refreshToken = async (
   refreshToken: string,
   clientId: string,
-): Promise<string> {
-  const params = new URLSearchParams();
-  params.append("grant_type", "refresh_token");
-  params.append("refresh_token", refreshToken);
-  params.append("client_id", clientId);
-
-  const result = await fetch("https://accounts.spotify.com/api/token", {
-    method: "POST",
-    headers: { "Content-Type": "application/x-www-form-urlencoded" },
-    body: params,
+): Promise<SpotifyAccessToken> => {
+  const params = objectToURLSearchParams({
+    grant_type: "refresh_token",
+    refresh_token: refreshToken,
+    client_id: clientId,
   });
 
-  const data = await result.json();
+  const result = await SpotifyPOSTClient("/api/token", params);
 
   if (!result.ok) {
     throw new Error("Failed to refresh token: " + result.status);
   }
 
-  const newAccessToken: string = data.access_token;
-
-  const expiresIn = data.expires_in || 3600;
-  localStorage.setItem("access_token", newAccessToken);
-  localStorage.setItem(
-    "expires_at",
-    (Date.now() + expiresIn * 1000).toString(),
-  );
-
-  return newAccessToken;
-}
-
-export async function fetchTrack(token: string, trackId: string): Promise<any> {
-  const result = await fetch(`https://api.spotify.com/v1/tracks/${trackId}`, {
-    method: "GET",
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-  });
-
-  if (!result.ok) {
-    throw new Error(`Failed to fetch track: ${result.status}`);
-  }
-
-  const data = await result.json();
-  console.log("Track data:", data);
-
-  return data;
-}
+  return result;
+};

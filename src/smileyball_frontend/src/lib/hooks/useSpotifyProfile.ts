@@ -1,38 +1,49 @@
-import { useState, useEffect } from "react";
-import { fetchProfile } from "@/lib/scripts/spotify";
+import { useAtom } from "jotai";
+import { useEffect } from "react";
+import { spotifyProfileAtom } from "@/lib/store/profile";
+import { SpotifyGETClient } from "@/lib/api/spotifyConfig";
+import { useSpotifyAuth } from "@/lib/hooks/useSpotifyAuth";
+import { useSpotifyCookies } from "@/lib/hooks/useSpotifyCookies";
+import useComponentError from "@/lib/hooks/useError";
 
 export const useSpotifyProfile = () => {
-  const [profile, setProfile] = useState<any>(null);
-  const [loading, setLoading] = useState<boolean>(true);
-  const access_token = localStorage.getItem("access_token");
+  const [spotifyProfile, setSpotifyProfile] = useAtom(spotifyProfileAtom);
+
+  const { handleLogin, logoutFromSpotify } = useSpotifyAuth();
+  const { error, setComponentError, clearComponentError } =
+    useComponentError("useSpotifyProfile");
+
+  const { getCookies } = useSpotifyCookies();
+  const access_token = getCookies().access_token;
 
   const fetchProfileData = async () => {
     try {
-      if (access_token) {
-        const profile = await fetchProfile(access_token);
-        setProfile(profile);
-      }
+      const profile = await SpotifyGETClient("/v1/me");
+      setSpotifyProfile(profile);
+      clearComponentError();
     } catch (err) {
-      // refresh token and fetchProfile again if didnt work remove tokens from localStorage
-      console.error("Couldnt fetch profile data", err);
-    } finally {
-      setLoading(false);
+      setComponentError("Couldn’t fetch profile data");
     }
-  };
-
-  const handleClearProfile = () => {
-    setProfile(null);
   };
 
   useEffect(() => {
-    setLoading(true);
     if (access_token) {
       fetchProfileData();
-    } else {
-      setProfile(null);
-      setLoading(false);
     }
   }, [access_token]);
 
-  return { profile, loading, handleClearProfile };
+  const handleLoginWithProfileData = async () => {
+    await handleLogin();
+  };
+
+  const handleLogoutFromSpotify = () => {
+    logoutFromSpotify();
+  };
+
+  return {
+    spotifyProfile,
+    handleLogoutFromSpotify,
+    spotifyProfileError: error,
+    handleLoginWithProfileData,
+  };
 };
