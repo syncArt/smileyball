@@ -27,13 +27,6 @@ pub fn add_multiple_songs_to_lobby(
     added_by: Principal,
 ) -> Result<(), ContestError> {
     let mut contest = repository::get_contest_by_id(contest_id)?;
-
-    if !contest.optional_stages.lobby {
-        validate_stage(contest_id, vec![ContestStage::Waiting])?;
-    } else {
-        return Err(ContestError::InvalidStageTransition);
-    }
-
     for song_id in song_ids {
         let song_data = LobbySongData::new(added_by);
         contest
