@@ -1,5 +1,6 @@
 import { useState } from "react";
-import { fetchTrack } from "@/lib/scripts/spotify";
+import { useSpotifyCookies } from "@/lib/hooks/useSpotifyCookies";
+import { SpotifyGETClient } from "@/lib/api/spotifyConfig";
 
 export type Track = {
   albumName: string;
@@ -22,16 +23,17 @@ export const useSpotifyTrackList = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
 
-  const accessToken = localStorage.getItem("access_token");
+  const { getCookies } = useSpotifyCookies();
+  const access_token = getCookies().access_token;
 
   const addTrack = async (trackId: string) => {
     setLoading(true);
     try {
-      if (!accessToken) {
+      if (!access_token) {
         throw new Error("No access token available");
       }
 
-      const trackData = await fetchTrack(accessToken, trackId);
+      const trackData = await SpotifyGETClient(`/v1/tracks/${trackId}`);
 
       const newTrack = {
         albumName: trackData.album.name,
