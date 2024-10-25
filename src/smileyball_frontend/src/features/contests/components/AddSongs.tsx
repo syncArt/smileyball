@@ -1,7 +1,7 @@
 import React, { ChangeEvent } from "react";
 import { Track } from "@/lib/hooks/useSpotifyTrackList";
 import { useSpotifyProfile } from "@/lib/hooks/useSpotifyProfile";
-import { SpotifyLogin } from "./SpotifyLogin";
+import { SpotifyLogin } from "@/lib/components/SpotifyLogin";
 import { SpotifySong } from "./SpotifySong";
 
 type SongListModuleProps = {

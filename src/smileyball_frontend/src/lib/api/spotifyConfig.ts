@@ -23,9 +23,6 @@ export const SpotifyPOSTClient = async (
   path: string,
   params: URLSearchParams,
 ) => {
-  const { getCookies } = useSpotifyCookies();
-  const access_token = getCookies().access_token;
-
   const result = await fetch(`https://accounts.spotify.com${path}`, {
     method: "POST",
     headers: { "Content-Type": "application/x-www-form-urlencoded" },
