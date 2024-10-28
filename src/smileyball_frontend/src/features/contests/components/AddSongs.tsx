@@ -1,7 +1,6 @@
 import React, { ChangeEvent } from "react";
 import { Track } from "@/lib/hooks/useSpotifyTrackList";
 import { useSpotifyProfile } from "@/lib/hooks/useSpotifyProfile";
-import { SpotifyLogin } from "@/lib/components/SpotifyLogin";
 import { SpotifySong } from "./SpotifySong";
 
 type SongListModuleProps = {
@@ -26,10 +25,8 @@ const SongListModule = ({
   trackErr,
 }: SongListModuleProps) => {
   const { spotifyProfile } = useSpotifyProfile();
-
   return (
     <div className="flex w-full flex-col">
-      <SpotifyLogin />
       {spotifyProfile && (
         <SpotifySong
           trackList={trackList}

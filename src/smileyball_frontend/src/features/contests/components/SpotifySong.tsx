@@ -1,6 +1,7 @@
 import { Input, Label } from "@/lib/components/form";
 import { ChangeEvent } from "react";
 import { Track } from "@/lib/hooks/useSpotifyTrackList";
+import { SongsList } from "@/lib/components/SongsList";
 
 export type UseSpotifyTrackList = {
   trackList: Track[];
@@ -25,28 +26,12 @@ export const SpotifySong = ({
 }: UseSpotifyTrackList) => {
   return (
     <div className="flex w-full flex-col">
-      {/*<SpotifyProfileTracks />*/}
-
-      <h2 className="mt-4 flex w-full font-sequel100Black text-xl font-55">
-        SONGS LIST:{" "}
+      <h2 className="mt-4 flex w-full font-sequel100Black text-[12px] font-55">
+        SONGS LIST:
       </h2>
-      <ul className="flex flex-col">
-        {trackList.map((track, index: number) => (
-          <li className="flex w-full items-center" key={track.spotifyId}>
-            <p className="flex font-bold">
-              #{index + 1}:{track.trackName}, {track.albumName},{" "}
-              {track.artistName}
-            </p>
-            <button
-              className="relative -bottom-[1px] ml-4 flex font-sequel100Black font-55"
-              onClick={() => removeTrack(track.spotifyId)}
-            >
-              //Remove
-            </button>
-          </li>
-        ))}
-      </ul>
-
+      <div className="mt-3 flex">
+        <SongsList songsList={trackList} removeTrack={removeTrack} />
+      </div>
       <div className="mt-6 flex w-full items-end gap-2">
         <Label id="spotify-link" text="Spotify Track Link">
           <Input

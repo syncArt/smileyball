@@ -16,8 +16,8 @@ export const CreateContestPage = () => {
         </div>
         <PageMenu
           menuData={[
-            { name: "New Contest", link: "new" },
-            { name: "List", link: "list" },
+            { name: "New Contest", link: "one-of-x" },
+            { name: "Your Contests", link: "list" },
           ]}
         />
         <Outlet />

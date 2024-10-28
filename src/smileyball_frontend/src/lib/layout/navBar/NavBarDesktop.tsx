@@ -1,6 +1,5 @@
 import LoginIcon from "@/assets/images/login-icon.svg";
 import SmileyballLogoText from "@/assets/images/smileyball.svg";
-import { useNavBarData } from "@/lib/hooks/useNavBarData";
 import Pencil from "@/assets/images/pencil.svg";
 import { useAuth } from "@/lib/hooks";
 import { useEffect, useState } from "react";
@@ -19,10 +18,15 @@ const NavBarDesktopMenuItem = ({ text, link }: NavBarMobileMenuItemProps) => (
   </a>
 );
 
-export const NavBarDesktop = () => {
+export const NavBarDesktop = ({
+  navbarData,
+}: {
+  navbarData: {
+    name: string;
+    link: string;
+  }[];
+}) => {
   const [nickname, setNickname] = useState("");
-
-  const navBarData = useNavBarData();
   const { isAuthenticated, login, logout } = useAuth();
 
   const handleLoginLogout = () => {
@@ -46,7 +50,7 @@ export const NavBarDesktop = () => {
   return (
     <nav className="relative mb-2 mt-2 hidden w-full items-center justify-between text-[18px] laptop:flex">
       <div className="ml-[20px] flex gap-[20px] font-spaceMono font-bold italic">
-        {navBarData.map((item) => (
+        {navbarData.map((item) => (
           <NavBarDesktopMenuItem
             key={`navbar-deskotp-${item.name}`}
             text={item.name}
