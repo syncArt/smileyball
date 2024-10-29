@@ -3,7 +3,7 @@ import { Checkbox } from "@/lib/components/form/Checkbox";
 
 type SelectWithCheckboxStyleProps = {
   options: { label: string; value: string }[];
-  selectedOption: string;
+  selectedOption?: string;
   onChange: (value: ChangeEvent<HTMLInputElement>) => void;
 };
 

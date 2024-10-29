@@ -1,6 +1,11 @@
-import { useState } from "react";
 import { useSpotifyCookies } from "@/lib/hooks/useSpotifyCookies";
 import { SpotifyGETClient } from "@/lib/api/spotifyConfig";
+import { useAtom } from "jotai";
+import {
+  contestTracksAtom,
+  contestTracksErrorAtom,
+  contestTracksLoadingAtom,
+} from "@/features/contests/store/contestTracks";
 
 export type Track = {
   albumName: string;
@@ -19,9 +24,9 @@ export type Track = {
 };
 
 export const useSpotifyTrackList = () => {
-  const [trackList, setTrackList] = useState<Track[]>([]);
-  const [loading, setLoading] = useState<boolean>(false);
-  const [error, setError] = useState<string | null>(null);
+  const [trackList, setTrackList] = useAtom(contestTracksAtom);
+  const [loading, setLoading] = useAtom(contestTracksLoadingAtom);
+  const [error, setError] = useAtom(contestTracksErrorAtom);
 
   const { getCookies } = useSpotifyCookies();
   const access_token = getCookies().access_token;

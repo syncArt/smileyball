@@ -1,5 +1,5 @@
 import { useLastContest } from "./useLastContest";
 import { useGetAllContests } from "./useGetAllContests";
-import { useCreateContest } from "./useCreateContest";
+import { useContestForm } from "./useContestForm";
 
-export { useLastContest, useGetAllContests, useCreateContest };
+export { useLastContest, useGetAllContests, useContestForm };
