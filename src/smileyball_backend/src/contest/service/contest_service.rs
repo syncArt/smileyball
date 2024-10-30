@@ -1,6 +1,5 @@
-use crate::contest::model::contest::{ContestData, CreateContest};
+use crate::contest::model::contest::{ContestData, CreateContest, Status};
 use crate::contest::model::error::ContestError;
-use crate::contest::model::stage::Status;
 use crate::contest::repository;
 use crate::utils::generate_random_id;
 use crate::with_management;

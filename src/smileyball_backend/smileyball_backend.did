@@ -10,7 +10,7 @@ type ContestData = record {
   optional_stages : OptionalStages;
   price_pool_init : nat64;
   created_at : nat64;
-  lobby_songs : opt vec record { nat32; LobbySongData };
+  lobby : opt Lobby;
   total_votes : opt nat32;
   contest_title : text;
   songs_in_lobby_amount : opt nat32;
@@ -62,12 +62,19 @@ type ContestStages = record {
 };
 type CreateContest = record {
   contest_description : text;
+  lobby_duration : opt Duration;
   max_songs_amount : opt nat32;
   min_songs_amount : opt nat32;
   optional_stages : opt OptionalStages;
   contest_title : text;
 };
+type Duration = variant { OneWeek; ThreeDays; TwoWeeks };
 type GetContestStagesResponse = record { contest_stages : ContestStages };
+type Lobby = record {
+  duration : Duration;
+  songs : opt vec record { nat32; LobbySongData };
+  submission_deadline : opt nat64;
+};
 type LobbySongData = record {
   lobby_votes : vec record { principal; Vote };
   added_by : principal;

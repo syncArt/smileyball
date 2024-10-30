@@ -1,4 +1,4 @@
 pub mod contest;
 pub mod error;
-pub mod stage;
-pub mod vote;
+pub mod live;
+pub mod lobby;
