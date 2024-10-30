@@ -9,6 +9,7 @@ pub enum ContestError {
     KeyNotFound,
     UpdateError(UpdateError),
     InvalidStageTransition,
+    InvalidStage,
     MissingSongs,
     ContestStopped,
     UnauthorizedAccess,
@@ -44,6 +45,7 @@ impl Display for ContestError {
             ContestError::MissingSongs => write!(f, "Missing Songs for prev stage"),
             ContestError::UnauthorizedAccess => write!(f, "Unauthorized access to the method"),
             ContestError::InvalidStageTransition => write!(f, "Invalid stage transition"),
+            ContestError::InvalidStage => write!(f, "Invalid stage"),
             ContestError::ContestStopped => write!(f, "The contest is currently stopped"),
             ContestError::MissingSongsInLobby => {
                 write!(f, "Lobby songs cannot be empty if lobby stage is skipped")

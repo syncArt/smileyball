@@ -2,7 +2,7 @@ import { useAtom } from "jotai";
 import { useSpotifyCookies } from "@/lib/hooks/useSpotifyCookies";
 import { SpotifyGETClient } from "@/lib/api/spotifyConfig";
 import { profileTracksAtom } from "@/lib/store/profileTracks";
-import { Track } from "@/lib/hooks/useSpotifyTrackList";
+import { Track } from "@/features/contests/oneOfX/hooks/useSpotifyTrackList";
 import useComponentError from "@/lib/hooks/useError";
 
 export const useSpotifyProfileTracks = () => {

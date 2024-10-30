@@ -2,7 +2,6 @@ import HamburgerMenu from "@/assets/images/hamburger-menu.svg";
 import HamburgerMenuArrow from "@/assets/images/hamburger-menu-arrow.svg";
 import LoginIcon from "@/assets/images/login-icon.svg";
 import { useState } from "react";
-import { useNavBarData } from "@/lib/hooks/useNavBarData";
 
 type NavBarMobileMenuItemProps = {
   text: string;
@@ -18,9 +17,15 @@ const NavBarMobileMenuItem = ({ text, link }: NavBarMobileMenuItemProps) => (
   </li>
 );
 
-export const NavBarMobile = () => {
+export const NavBarMobile = ({
+  navbarData,
+}: {
+  navbarData: {
+    name: string;
+    link: string;
+  }[];
+}) => {
   const [isOpen, setIsOpen] = useState(false);
-  const navBarData = useNavBarData();
 
   return (
     <div className="left-0 top-0 flex w-full laptop:hidden">
@@ -32,7 +37,7 @@ export const NavBarMobile = () => {
         className={`${isOpen ? "animate-fullMenuHeight" : "animate-zeroMenuHeight"} flex w-full`}
       >
         <ul className="flex w-full flex-col gap-4">
-          {navBarData.map((item) => (
+          {navbarData.map((item) => (
             <NavBarMobileMenuItem
               key={`navbar-mobile-${item.name}`}
               link={item.link}

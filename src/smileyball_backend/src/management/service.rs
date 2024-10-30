@@ -1,12 +1,10 @@
-use crate::contest::model::error::{ContestError, UpdateError};
-use crate::contest::model::stage::Status;
-use crate::contest::repository::update_contest;
+use crate::contest::model::contest::Status;
+use crate::contest::model::error::ContestError;
 use crate::contest::service::get_contest_by_id;
 use crate::management::model::{ContestStage, ContestStages};
 use crate::management::repository;
-use crate::management::repository::{
-    is_contest_in_stage, remove_contest_from_stage, update_contest_stage,
-};
+use crate::management::repository::is_contest_in_stage;
+use crate::management::stages::{finished, jury, live, lobby, waiting};
 
 pub fn process_next(contest_id: u64) -> Result<(), ContestError> {
     let mut contest = get_contest_by_id(contest_id)?;
@@ -14,99 +12,16 @@ pub fn process_next(contest_id: u64) -> Result<(), ContestError> {
         return Err(ContestError::ContestStopped);
     }
 
-    let current_stage = if is_contest_in_stage(ContestStage::Waiting, contest_id) {
-        ContestStage::Waiting
-    } else if is_contest_in_stage(ContestStage::Lobby, contest_id) {
-        ContestStage::Lobby
-    } else if is_contest_in_stage(ContestStage::Jury, contest_id) {
-        ContestStage::Jury
-    } else if is_contest_in_stage(ContestStage::Live, contest_id) {
-        ContestStage::Live
-    } else if is_contest_in_stage(ContestStage::Finished, contest_id) {
-        ContestStage::Finished
-    } else {
-        return Err(ContestError::InvalidStageTransition);
-    };
+    let current_stage = get_current_stage(contest_id)?;
 
     match current_stage {
-        ContestStage::Waiting => {
-            if !contest.optional_stages.lobby
-                && (contest.lobby_songs.is_none()
-                    || contest.lobby_songs.as_ref().unwrap().is_empty())
-            {
-                return Err(ContestError::MissingSongsInLobby);
-            }
-
-            remove_contest_from_stage(ContestStage::Waiting, contest_id);
-
-            if contest.optional_stages.lobby {
-                update_contest_stage(ContestStage::Lobby, contest_id);
-            } else if contest.optional_stages.jury {
-                update_contest_stage(ContestStage::Jury, contest_id);
-            } else {
-                contest
-                    .move_songs_to_contest()
-                    .map_err(|e| ContestError::UpdateError(UpdateError::new(e)))?;
-                update_contest_stage(ContestStage::Live, contest_id);
-                update_contest(contest_id, contest)?;
-            }
-        }
-        ContestStage::Lobby => {
-            let songs_count = contest
-                .lobby_songs
-                .as_ref()
-                .map_or(0, |songs| songs.len() as u32);
-
-            if let Some(min) = contest.min_songs_amount {
-                if songs_count < min {
-                    return Err(ContestError::NotEnoughSongsInLobby);
-                }
-            }
-            if let Some(max) = contest.max_songs_amount {
-                if songs_count > max {
-                    return Err(ContestError::TooManySongsInLobby);
-                }
-            }
-
-            remove_contest_from_stage(ContestStage::Lobby, contest_id);
-
-            if contest.optional_stages.jury {
-                update_contest_stage(ContestStage::Jury, contest_id);
-            } else {
-                contest
-                    .move_songs_to_contest()
-                    .map_err(|e| ContestError::UpdateError(UpdateError::new(e)))?;
-                update_contest_stage(ContestStage::Live, contest_id);
-                update_contest(contest_id, contest)?;
-            }
-        }
-        ContestStage::Jury => {
-            contest
-                .move_songs_to_contest()
-                .map_err(|e| ContestError::UpdateError(UpdateError::new(e)))?;
-
-            remove_contest_from_stage(ContestStage::Jury, contest_id);
-            update_contest_stage(ContestStage::Live, contest_id);
-            update_contest(contest_id, contest)?;
-        }
-        ContestStage::Live => {
-            remove_contest_from_stage(ContestStage::Live, contest_id);
-            update_contest_stage(ContestStage::Finished, contest_id);
-            update_contest(contest_id, contest)?;
-        }
-        ContestStage::Finished => {
-            contest
-                .finalize_contest()
-                .map_err(|e| ContestError::UpdateError(UpdateError::new(e)))?;
-
-            remove_contest_from_stage(ContestStage::Finished, contest_id);
-            update_contest_stage(ContestStage::Paid, contest_id);
-            update_contest(contest_id, contest)?;
-        }
-        _ => return Err(ContestError::InvalidStageTransition),
+        ContestStage::Waiting => waiting::process_waiting_stage(&mut contest, contest_id),
+        ContestStage::Lobby => lobby::process_lobby_stage(&mut contest, contest_id),
+        ContestStage::Jury => jury::process_jury_stage(&mut contest, contest_id),
+        ContestStage::Live => live::process_live_stage(&mut contest, contest_id),
+        ContestStage::Finished => finished::process_finished_stage(&mut contest, contest_id),
+        _ => Err(ContestError::InvalidStageTransition),
     }
-
-    Ok(())
 }
 
 pub fn get_current_stage(contest_id: u64) -> Result<ContestStage, ContestError> {

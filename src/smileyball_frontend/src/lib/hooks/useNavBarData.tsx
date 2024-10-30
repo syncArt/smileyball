@@ -1,16 +1,12 @@
 export const useNavBarData = () => {
   return [
     {
-      name: "create contest",
+      name: "dashboard",
+      link: "/dashboard",
+    },
+    {
+      name: "contest creator",
       link: "/create-contest",
-    },
-    {
-      name: "requests",
-      link: "/requests",
-    },
-    {
-      name: "vote",
-      link: "/vote",
     },
     {
       name: "about",

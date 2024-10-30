@@ -1,4 +1,4 @@
 import { HeroPage } from "./HeroPage";
-import { SongRequestPage } from "./SongRequestPage";
+import { Dashboard } from "./Dashboard";
 
-export { HeroPage, SongRequestPage };
+export { HeroPage, Dashboard };

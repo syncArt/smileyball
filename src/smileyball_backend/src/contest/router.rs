@@ -1,7 +1,6 @@
-use crate::contest::model::contest::{ContestData, CreateContest};
+use crate::contest::model::contest::{ContestData, CreateContest, Status, Vote};
 use crate::contest::model::error::ContestError;
-use crate::contest::model::stage::Status;
-use crate::contest::model::vote::{LobbySongData, Vote};
+use crate::contest::model::lobby::LobbySongData;
 use crate::contest::service;
 use std::collections::HashMap;
 

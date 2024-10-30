@@ -1,19 +1,15 @@
 type ContestData = record {
   status : opt Status;
   contest_description : text;
-  contest_songs : opt vec record { nat32; ContestSongData };
-  contest_results : opt vec ContestResultData;
-  max_songs_amount : opt nat32;
-  jury : opt vec principal;
+  live : opt Live;
   added_by : principal;
-  min_songs_amount : opt nat32;
   optional_stages : OptionalStages;
+  jury_pids : opt vec principal;
   price_pool_init : nat64;
   created_at : nat64;
-  lobby_songs : opt vec record { nat32; LobbySongData };
-  total_votes : opt nat32;
+  results : opt vec ContestResultData;
+  lobby : opt Lobby;
   contest_title : text;
-  songs_in_lobby_amount : opt nat32;
 };
 type ContestError = variant {
   UpdateError : UpdateError;
@@ -27,11 +23,12 @@ type ContestError = variant {
   KeyNotFound;
   InvalidStageTransition;
   UnauthorizedAccess;
+  InvalidStage;
 };
 type ContestResultData = record {
   closed_by : opt principal;
   votes_average : float32;
-  top_voters : vec Vote;
+  top_voters : vec record { principal; Vote };
   votes_amount : nat32;
   position : nat32;
   finished_at : opt text;
@@ -62,12 +59,29 @@ type ContestStages = record {
 };
 type CreateContest = record {
   contest_description : text;
+  lobby_duration : opt Duration;
   max_songs_amount : opt nat32;
   min_songs_amount : opt nat32;
   optional_stages : opt OptionalStages;
   contest_title : text;
 };
+type Duration = variant { OneWeek; ThreeDays; TwoWeeks };
 type GetContestStagesResponse = record { contest_stages : ContestStages };
+type Live = record {
+  voting_deadline : opt nat64;
+  duration : Duration;
+  contest_songs : opt vec record { nat32; ContestSongData };
+  total_votes_amount : opt nat32;
+};
+type Lobby = record {
+  duration : Duration;
+  songs_data : opt vec record { nat32; LobbySongData };
+  max_songs_amount : opt nat32;
+  min_songs_amount : opt nat32;
+  submission_deadline : opt nat64;
+  total_songs_amount : opt nat32;
+  total_jury_votes_amount : opt nat32;
+};
 type LobbySongData = record {
   lobby_votes : vec record { principal; Vote };
   added_by : principal;
@@ -85,7 +99,7 @@ type Result_5 = variant { Ok : ContestStage; Err : ContestError };
 type Status = variant { Stopped; InProgress };
 type UpdateError = record { message : text };
 type Vote = record { vote : nat8 };
-service : {
+service : (nat64) -> {
   contest_get_get_contest : () -> (Result) query;
   contest_get_get_contest_by_id : (nat64) -> (Result_1) query;
   contest_update_add_jury_vote : (nat64, nat32, Vote) -> (Result_2);
@@ -95,7 +109,11 @@ service : {
   contest_update_create_contest : (CreateContest) -> (Result_3);
   contest_update_remove_contest : (nat64) -> (Result_2);
   contest_update_update_status : (nat64, Status) -> (Result_2);
+  counter : () -> (nat32) query;
+  cycles_used : () -> (nat64) query;
   management_get_all_contest_stages : () -> (Result_4) query;
   management_get_current_stage : (nat64) -> (Result_5) query;
   management_update_process_next : (nat64) -> (Result_2);
+  start_with_interval_secs : (nat64) -> ();
+  stop : () -> ();
 }
