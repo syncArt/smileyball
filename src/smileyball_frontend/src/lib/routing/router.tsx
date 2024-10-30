@@ -3,10 +3,10 @@ import { HeroPage, Dashboard } from "@/pages";
 import { CreateContestPage } from "@/pages/CreateContestPage/CreateContestPage";
 import { LoginPage } from "@/pages/LoginPage";
 import { PageNotFound } from "@/pages/error";
-import { ContestsList } from "@/features/contests/components/ContestsList";
+import { ContestsList } from "@/features/contests/oneOfX/components/ContestsList";
 import { Layout } from "@/lib/layout/Layout";
 import { SpotifyAuthCallback } from "@/pages/SpotifyAuthCallback";
-import { OneOfXForm } from "@/features/contests/components/OneOfXForm";
+import { OneOfXForm } from "@/features/contests/oneOfX/components/OneOfXForm";
 
 export const router = createBrowserRouter([
   {

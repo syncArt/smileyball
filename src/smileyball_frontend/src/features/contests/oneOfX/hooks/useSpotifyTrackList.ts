@@ -5,7 +5,7 @@ import {
   contestTracksAtom,
   contestTracksErrorAtom,
   contestTracksLoadingAtom,
-} from "@/features/contests/store/contestTracks";
+} from "@/features/contests/oneOfX/store/contestTracks";
 
 export type Track = {
   albumName: string;
@@ -81,5 +81,9 @@ export const useSpotifyTrackList = () => {
     );
   };
 
-  return { trackList, addTrack, removeTrack, loading, error };
+  const clearError = () => {
+    setError("");
+  };
+
+  return { trackList, addTrack, removeTrack, clearError, loading, error };
 };

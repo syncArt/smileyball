@@ -1,21 +1,16 @@
-import { ChangeEvent } from "react";
 import { Checkbox } from "@/lib/components/form/Checkbox";
 
-type SelectWithCheckboxStyleProps = {
+type SelectWithCheckboxStyleProps<T> = {
   options: { label: string; value: string }[];
-  selectedOption?: string;
-  onChange: (value: ChangeEvent<HTMLInputElement>) => void;
+  selectedOption?: T;
+  onChange: (value: T) => void;
 };
 
-export const RadioButtons = ({
+export const RadioButtons = <T,>({
   options,
   selectedOption,
   onChange,
-}: SelectWithCheckboxStyleProps) => {
-  const handleOptionChange = (event: ChangeEvent<HTMLInputElement>) => {
-    onChange(event);
-  };
-
+}: SelectWithCheckboxStyleProps<T>) => {
   return (
     <div className="space-y-2">
       {options.map((option) => (
@@ -25,7 +20,9 @@ export const RadioButtons = ({
           id={option.value}
           label={option.label}
           checked={selectedOption === option.value}
-          onChange={handleOptionChange}
+          onChange={() => {
+            onChange(option.value as T);
+          }}
         />
       ))}
     </div>

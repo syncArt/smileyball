@@ -1,5 +1,5 @@
 import { useAuth, AuthProvider, useAuthClient } from "./useAuthClient";
-import { useSpotifyTrackList } from "./useSpotifyTrackList";
+import { useSpotifyTrackList } from "../../features/contests/oneOfX/hooks/useSpotifyTrackList";
 import { useSpotifyLink } from "./useSpotifyLink";
 import { useSpotifyAuth } from "./useSpotifyAuth";
 

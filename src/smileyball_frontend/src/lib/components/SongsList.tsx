@@ -14,6 +14,9 @@ export const SongsList = ({
 }) => {
   return (
     <ul className="flex flex-col">
+      <h2 className="mt-4 flex w-full font-sequel100Black text-[16px] font-55">
+        SONGS LIST:
+      </h2>
       {songsList.map((track) => (
         <li
           className="relative my-1 box-content flex h-[16px] w-full items-center border-0 border-grey p-1 hover:h-[12px] hover:border-2"

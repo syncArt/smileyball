@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { refreshToken, redirectToAuthCodeFlow } from "@/lib/scripts/spotify";
-import { usePostMessageListener } from "@/features/contests/hooks/useSpotifyPostMessage";
+import { usePostMessageListener } from "@/lib/hooks/useSpotifyPostMessage";
 import { useSpotifyCookies } from "@/lib/hooks/useSpotifyCookies";
 import { useAtom } from "jotai/index";
 import { spotifyProfileAtom } from "@/lib/store/profile";
